@@ -502,7 +502,7 @@ const IoTDashboard = () => {
           <div className={`px-4 py-2 rounded-xl border flex items-center gap-2 ${data.pump ? 'bg-blue-500/20 border-blue-500 text-blue-400' : 'bg-slate-800 border-slate-700 text-slate-500'}`}><RefreshCw size={18} className={data.pump ? 'animate-spin' : ''} /><span className="text-xs font-bold">水泵: {data.pump ? 'ON' : 'OFF'}</span></div>
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <div className="bg-slate-800/50 p-4 rounded-xl border border-slate-700 relative overflow-hidden">
           <div className="flex justify-between items-start mb-2"><span className="text-xs text-slate-400">環境溫度</span><Thermometer size={16} className="text-orange-400" /></div>
           <div className="text-3xl font-mono font-bold text-white mb-2">{data.temp}<span className="text-sm text-slate-500 ml-1">°C</span></div>
@@ -879,7 +879,7 @@ const AICard = ({ lang, mode = 'preview' }) => {
 
   return (
     <div className={`bg-white overflow-hidden ${mode === 'full' ? 'mt-12' : 'py-16 border-t border-slate-100'}`}>
-      <div className={mode === 'full' ? '' : 'container mx-auto px-6 max-w-6xl'}>
+      <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-12">
           <span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Student Showcase</span>
           <h2 className="text-3xl font-bold text-slate-900 mt-2">
@@ -1772,14 +1772,15 @@ const ModuleDetail = ({ module, onBack, lang }) => {
         {module.details.gallery && (
           <div className="mt-24">
             <h2 className="text-2xl font-bold text-slate-900 mb-8 border-l-4 border-purple-500 pl-4">{lang === 'en' ? 'Gallery' : '活動花絮'}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {module.details.gallery.map((img, i) => (
-                <div key={i} className="aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer group"><Image src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={`Gallery ${i}`} /></div>
+                <div key={i} className="aspect-square rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all">
+                  <Image src={img} className="w-full h-full object-cover hover:scale-110 transition-transform duration-500" />
+                </div>
               ))}
             </div>
           </div>
         )}
-
       </div>
     </div>
   );
@@ -1791,13 +1792,20 @@ const App = () => {
   const [showAbout, setShowAbout] = useState(false);
   const [showPhysical, setShowPhysical] = useState(false);
   const [showBSRU, setShowBSRU] = useState(false);
-  
   const [showExhibition, setShowExhibition] = useState(false);
-  
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  // 🔴 [CRITICAL FIX] 強制設定 Viewport Meta Tag，確保手機版正確縮放
   useEffect(() => {
+    let meta = document.querySelector("meta[name='viewport']");
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'viewport';
+      document.head.appendChild(meta);
+    }
+    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+    
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -1971,6 +1979,13 @@ const App = () => {
   return (
     <div className="font-sans text-slate-800 bg-white min-h-screen selection:bg-green-100 selection:text-green-800 animate-fade-in w-full overflow-x-hidden">
       <div className="fixed top-0 left-0 w-full h-10 bg-slate-900 z-[60] flex justify-between items-center px-4 lg:px-8 shadow-md">
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 px-2 py-0.5 bg-slate-800 rounded text-[10px] md:text-xs text-slate-400 border border-slate-700">
+             <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+             ONLINE
+          </div>
+          <span className="text-white text-xs font-bold tracking-wider hidden sm:block">2025 EXHIBITION</span>
+        </div>
         <div className="flex items-center gap-2 text-[10px] md:text-xs font-medium text-slate-400 tracking-wider">
           <Globe size={14} className="text-green-500" />
           <span className="hidden md:inline">{lang === 'en' ? 'Current Language: English' : '目前語言：繁體中文'}</span>
@@ -1980,20 +1995,20 @@ const App = () => {
           <ArrowRight size={12} />
         </button>
       </div>
-// ... inside App component return ...
+
       <nav className="fixed w-full z-50 transition-all duration-300 top-10 bg-slate-900/95 backdrop-blur-md shadow-lg py-2">
-        <div className="container mx-auto px-6 flex justify-between items-center">
-          {/* 左側：校徽與校名品牌區塊 (修改後) */}
+        <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
+          {/* 左側：校徽與校名品牌區塊 */}
           <div className="flex items-center gap-3 cursor-pointer group select-none" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <div className="w-10 h-10 md:w-12 md:h-12 relative flex-shrink-0 bg-white rounded-full p-0.5 shadow-md transition-transform duration-300 group-hover:scale-105 ring-2 ring-white/10 overflow-hidden">
                <Image src={images.about_logo} className="w-full h-full object-cover rounded-full bg-transparent" alt="NEHSP Logo" />
             </div>
             <div className="flex flex-col justify-center">
                 <h1 className="text-slate-100 font-bold text-sm md:text-lg leading-none tracking-wide group-hover:text-white transition-colors flex items-center gap-2">
-                    {lang === 'en' ? 'NEHSP' : '國立屏科實中'}
+                    {lang === 'en' ? 'National Experimental High School at Pingtung Science Park' : '國立屏科實驗高級中等學校'}
                 </h1>
                 <span className="text-slate-400 text-[10px] md:text-xs font-medium tracking-wider uppercase mt-1 group-hover:text-slate-300 transition-colors">
-                    {lang === 'en' ? 'Elementary Department' : '國小部雙語課程計畫'}
+                    {lang === 'en' ? 'MOE Digital Learning Deepening Program' : '教育部數位學習深耕計畫'}
                 </span>
             </div>
           </div>
@@ -2003,13 +2018,13 @@ const App = () => {
               <button key={index} onClick={() => scrollToSection(item.id)} className="text-sm font-medium hover:text-green-500 transition-colors text-slate-300">{item.name}</button>
             ))}
           </div>
-          {/* 手機版選單按鈕：切換圖示 */}
+          {/* 手機版選單按鈕 */}
           <button className="lg:hidden p-2 rounded-md text-white hover:bg-slate-800 transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
-        {/* 手機版下拉選單 (新增區塊) */}
+        {/* 手機版下拉選單 */}
         <div className={`lg:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
             <div className="flex flex-col p-4 space-y-2">
               {[{ name: lang === 'en' ? 'About' : '關於我們', id: 'about' }, { name: lang === 'en' ? 'Exhibition' : '成果發表', id: 'exhibition' }, { name: lang === 'en' ? 'Modules' : '課程模組', id: 'modules' }, { name: lang === 'en' ? 'In-Person Interaction' : '實體交流', id: 'physical-exchange' }, { name: lang === 'en' ? 'Gallery' : '成果展示', id: 'gallery' }, { name: lang === 'en' ? 'Contact' : '聯絡資訊', id: 'contact' }].map((item, index) => (
@@ -2028,7 +2043,7 @@ const App = () => {
 
       <header id="about" className="relative pt-40 pb-20 lg:pt-56 lg:pb-40 overflow-hidden bg-slate-50">
         <div className="absolute top-0 right-0 w-full lg:w-2/3 h-full bg-[#f0fdf4] -z-10 lg:rounded-bl-[150px]" />
-        <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+        <div className="container mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-16 items-center">
           <div className="space-y-8 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white border border-green-100 shadow-sm text-green-700 rounded-full text-xs font-bold uppercase tracking-wider">{lang === 'en' ? 'Digital Learning Program' : '數位學習深耕計畫'}</div>
             <h1 className="text-4xl lg:text-5xl xl:text-6xl font-extrabold text-slate-900 leading-[1.15]">{lang === 'en' ? 'From Pingtung to the World: Innovating for Sustainability' : '從屏東綠地出發，實踐地球永續未來'}</h1>
@@ -2038,7 +2053,6 @@ const App = () => {
               <button onClick={() => setShowAbout(true)} className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2">{lang === 'en' ? 'About Us' : '關於我們'}</button>
             </div>
           </div>
-          {/* 修改高度：增加 h-64 確保手機版有高度，避免圖片消失 */}
           <div className="relative h-64 lg:h-[500px]">
             <div className="relative z-10 w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-slate-200 group">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${images.hero})` }}></div>
@@ -2051,179 +2065,79 @@ const App = () => {
           </div>
         </div>
       </header>
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 w-full max-w-7xl">
-          <div className="text-center mb-16"><span className="text-green-600 font-bold tracking-wider text-sm uppercase">{lang === 'en' ? 'Mission Statement' : '計畫理念'}</span><h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">{content.mission.title}</h2><p className="text-lg text-slate-600 mt-4 max-w-3xl mx-auto leading-relaxed">{content.mission.desc}</p></div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {content.mission.pillars.map((pillar, idx) => (
-              <div key={idx} className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:shadow-xl transition-all group hover:-translate-y-2">
-                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-6 text-green-600 shadow-sm group-hover:bg-green-600 group-hover:text-white transition-colors border border-slate-100">{pillar.icon}</div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{pillar.title}</h3>
-                <p className="text-slate-600 text-sm leading-relaxed">{pillar.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="exhibition" className="bg-white pb-20">
+      
+      <section id="exhibition" className="py-24 bg-white">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row gap-12 items-center bg-slate-50 rounded-[3rem] p-8 lg:p-16 overflow-hidden relative group border border-slate-100 shadow-sm">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400/10 rounded-full blur-3xl"></div>
-            <div className="w-full lg:w-1/2 space-y-6 relative z-10 text-left">
-              <span className="text-yellow-600 font-bold uppercase tracking-widest text-sm flex items-center gap-2">
-                <Award size={18} /> Anniversary Highlight
-              </span>
-              <h2 className="text-3xl lg:text-5xl font-black text-slate-900 leading-tight">
-                {lang === 'en' ? '2025 Annual Exhibition: Taiwan Tech Expo' : '2025 年度成果發表：台灣科技展'}
-              </h2>
-              <p className="text-lg text-slate-600 leading-relaxed border-l-4 border-yellow-400 pl-6">
-                {lang === 'en' 
-                  ? 'Our students presented a year of mechatronics and net-zero research at the Tech Expo, winning the Bronze Promotion Award!' 
-                  : '於 2025/11/14 參加台灣科技展，學生們認真發表這一年來的實作作品與研究心得，並榮獲銅質獎與人氣獎！'}
-              </p>
-              <button onClick={() => setShowExhibition(true)} className="px-8 py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl font-bold shadow-xl transition-all flex items-center gap-3">
-                {lang === 'en' ? 'View Exhibition Results' : '探索成果展紀錄'} <ArrowRight size={20} />
-              </button>
-            </div>
-            <div className="w-full lg:w-1/2 relative h-80 lg:h-[450px]">
-              <div className="absolute inset-0 grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <Image src={exhibitionImages.exh_group1} className="rounded-3xl shadow-lg h-[60%] w-full object-cover transform -rotate-3" />
-                  <div className="rounded-3xl shadow-lg h-[35%] w-full overflow-hidden bg-white">
-                    <Image src={exhibitionImages.exh_award_bronze} className="w-full h-full object-contain" />
-                  </div>
-                </div>
-                <div className="space-y-4 pt-8">
-                  <div className="rounded-3xl shadow-lg h-[35%] w-full overflow-hidden bg-white">
-                    <Image src={exhibitionImages.exh_intro1} className="w-full h-full object-cover" />
-                  </div>
-                  <Image src={exhibitionImages.exh_group2} className="rounded-3xl shadow-lg h-[60%] w-full object-cover transform rotate-3" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="modules" className="py-24 bg-slate-50 border-y border-slate-200">
-        <div className="container mx-auto px-6">
-          <div className="mb-12"><span className="text-blue-600 font-bold tracking-wider text-sm uppercase">{lang === 'en' ? 'Learning Path' : '學習路徑'}</span><h2 className="text-3xl md:text-4xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Course Modules' : '數位學習課程模組'}</h2></div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {content.modulesData.map((module, idx) => (
-              <div key={idx} className="bg-white rounded-3xl shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-slate-100 overflow-hidden group flex flex-col h-full cursor-pointer" onClick={() => setActiveModule(module)}>
-                <div className="relative h-48 overflow-hidden bg-slate-200">
-                  <Image src={module.img} alt={module.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                  <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 to-transparent opacity-60"></div>
-                  <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-slate-800 shadow-sm">{module.tag}</div>
-                </div>
-                <div className="p-6 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-3"><span className="text-4xl font-black text-slate-100 group-hover:text-green-50 transition-colors select-none">{module.id}</span></div>
-                  <h3 className="text-lg font-bold text-slate-900 mb-3 group-hover:text-green-600 transition-colors line-clamp-2">{module.title}</h3>
-                  <p className="text-slate-500 text-sm leading-relaxed mb-4 flex-1">{module.desc}</p>
-                  <div className="pt-4 border-t border-slate-50 mt-auto"><button className="text-green-600 text-xs font-bold uppercase tracking-wider flex items-center gap-1 group-hover:gap-2 transition-all">{lang === 'en' ? 'Learn More' : '查看詳情'} <ArrowRight size={12} /></button></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-        
-      <section id="physical-exchange" className="py-24 bg-white">
-        <div className="container mx-auto px-6">
-          <div className="bg-gradient-to-r from-green-600 to-teal-700 rounded-3xl shadow-2xl overflow-hidden relative">
-            <div className="absolute inset-0 bg-black/20"></div>
-            <div className="absolute top-0 right-0 w-2/3 h-full bg-white/10 skew-x-12 transform translate-x-20"></div>
-            <div className="relative z-10 flex flex-col lg:flex-row items-center p-8 lg:p-16 gap-12">
-              <div className="w-full lg:w-1/2 space-y-6 text-white">
-                <span className="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-bold tracking-wider uppercase border border-white/30">Global Voices</span>
-                <h2 className="text-3xl lg:text-5xl font-extrabold leading-tight">{lang === 'en' ? 'In-Person Interaction: Welcoming the World to Our Campus' : '實體國際交流：讓世界走進教室'}</h2>
-                <p className="text-lg text-green-50 opacity-90 leading-relaxed">{lang === 'en' ? 'We hosted students from Australia, Thailand, and international students from NSYSU, sharing our local net-zero ideas with the world through real interactions.' : '我們接待了來自澳洲、泰國以及中山大學的外籍生，將在地的減碳創意透過實體互動與世界分享。'}</p>
-                <button onClick={() => setShowPhysical(true)} className="inline-flex items-center gap-2 px-8 py-4 bg-white text-green-800 rounded-full font-bold shadow-lg hover:bg-green-50 transition-all transform hover:translate-x-2">
-                  {lang === 'en' ? 'View Highlights' : '查看精彩成果'} <ArrowRight size={18} />
-                </button>
-              </div>
-              <div className="w-full lg:w-1/2">
-                <div className="grid grid-cols-2 gap-4 transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                  <Image src={images.m4_group_nsysu} className="rounded-2xl shadow-lg w-full h-48 object-cover" />
-                  <Image src={images.m4_physical_aus} className="rounded-2xl shadow-lg w-full h-48 object-cover translate-y-8" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
-         <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent"></div>
-         <div className="container mx-auto px-6">
-            <div className="flex flex-col lg:flex-row gap-12 items-center">
-               <div className="w-full lg:w-1/2 order-2 lg:order-1">
-                  <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-4 translate-y-8">
-                         <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg transform rotate-2 hover:rotate-0 transition-all duration-500">
-                            <Image src={images.bsru_thaidance} className="w-full h-full object-cover" />
-                         </div>
-                         <div className="aspect-square rounded-2xl overflow-hidden shadow-lg transform -rotate-2 hover:rotate-0 transition-all duration-500">
-                            <Image src={images.bsru_course3} className="w-full h-full object-cover" />
-                         </div>
-                      </div>
-                      <div className="space-y-4">
-                         <div className="aspect-square rounded-2xl overflow-hidden shadow-lg transform -rotate-1 hover:rotate-0 transition-all duration-500">
-                            <Image src={images.bsru_twshare} className="w-full h-full object-cover" />
-                         </div>
-                         <div className="aspect-[3/4] rounded-2xl overflow-hidden shadow-lg transform rotate-1 hover:rotate-0 transition-all duration-500">
-                            <Image src={images.bsru_group3} className="w-full h-full object-cover" />
-                         </div>
-                      </div>
-                  </div>
-               </div>
-               <div className="w-full lg:w-1/2 order-1 lg:order-2 space-y-6">
-                  <span className="text-yellow-600 font-bold tracking-wider text-sm uppercase flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
-                    Special Feature
-                  </span>
-                  <h2 className="text-4xl lg:text-5xl font-black text-slate-900 leading-tight">
-                    {lang === 'en' ? 'Taiwan-Thailand Design Journey' : '臺泰減碳設計之旅'}
-                    <span className="block text-2xl lg:text-3xl font-bold text-slate-500 mt-2">Green Mango Expedition</span>
-                  </h2>
-                  <p className="text-lg text-slate-600 leading-relaxed border-l-4 border-yellow-400 pl-6">
-                    {lang === 'en' 
-                      ? 'Our largest physical exchange event! BSRU students from Thailand visited us for a deep-dive workshop. Together, we explored carbon footprints and used AI to design green solutions for Thai mangoes.' 
-                      : '本計畫最大型的實體交流活動！泰國 BSRU 國小學生親臨屏東，與我們進行深度的跨域工作坊。從認識碳足跡到運用 AI 共創泰國芒果減碳方案，這是一場跨越國界的綠色探險。'}
+           <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
+               <div>
+                  <div className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">Showcase</div>
+                  <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6">{lang === 'en' ? '2025 Annual Exhibition' : '2025 雙語數位學習成果發表展'}</h2>
+                  <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                     {lang === 'en' ? 'Showcasing our students\' journey in digital learning, mechatronics, and international exchange. Witness how we turn ideas into impact.' : '這是一場匯聚創意與汗水的盛會。我們展現學生在數位學習、機電整合及國際交流上的豐碩成果。邀請您一同見證孩子們如何將創新點子轉化為對環境的實質影響力。'}
                   </p>
-                   
-                  <div className="pt-4">
-                    <button onClick={() => setShowBSRU(true)} className="px-8 py-4 bg-yellow-500 hover:bg-yellow-400 text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all flex items-center gap-3 transform hover:-translate-y-1">
-                      {lang === 'en' ? 'Explore the Journey' : '探索活動紀錄'} <ArrowRight size={20} />
-                    </button>
-                  </div>
+                  <button onClick={() => setShowExhibition(true)} className="inline-flex items-center gap-2 text-green-600 font-bold text-lg hover:underline decoration-2 underline-offset-4">
+                     {lang === 'en' ? 'View Exhibition Details' : '查看完整成果發表'} <ArrowRight size={20} />
+                  </button>
                </div>
-            </div>
-         </div>
-      </section>
-
-      <section className="py-12 bg-slate-900">
-        <div className="container mx-auto px-6">
-          <IoTDashboard />
-          <div className="text-center mt-6">
-            <p className="text-slate-400 text-sm mb-4">{lang === 'en' ? 'This live data is powered by Module 2: Tech Thinking Fun.' : '此實時數據來自「模組二：科技運思趣」的 IoT 裝置。'}</p>
-            <button onClick={() => setActiveModule(content.modulesData[1])} className="text-green-400 hover:text-green-300 font-bold border-b border-green-500 pb-0.5 transition-colors">{lang === 'en' ? 'Explore Module 2 >' : '探索模組二 >'}</button>
-          </div>
+               <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-video group cursor-pointer" onClick={() => setShowExhibition(true)}>
+                   <Image src={exhibitionImages.exh_group1} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                       <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                          <Play className="ml-1 text-slate-900" size={32} />
+                       </div>
+                   </div>
+               </div>
+           </div>
         </div>
       </section>
-      <GlobalWall />
-        
-      <AICard lang={lang} mode="preview" />
-        
-      <section id="gallery" className="py-24 bg-white overflow-hidden">
+
+      <IoTDashboard />
+
+      <section className="py-24 bg-slate-50">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16"><h2 className="text-3xl md:text-4xl font-bold text-slate-900">{lang === 'en' ? 'Highlights' : '精彩瞬間'}</h2></div>
-          <div className="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory hide-scrollbar">
-            {allHighlights.map((img, idx) => (
-              <div key={idx} className="min-w-[300px] md:min-w-[400px] snap-center">
-                <div className="rounded-2xl overflow-hidden shadow-lg h-[250px] relative group">
-                  <Image src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+           <div className="text-center mb-16">
+              <span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Curriculum</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-2">{content.mission.title}</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto mt-4 text-lg">{content.mission.desc}</p>
+           </div>
+           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {content.mission.pillars.map((item, index) => (
+                <div key={index} className="bg-white p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-100 group">
+                  <div className="w-16 h-16 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center mb-6 group-hover:bg-green-600 group-hover:text-white transition-colors shadow-inner">{item.icon}</div>
+                  <h3 className="text-xl font-bold text-slate-900 mb-3">{item.title}</h3>
+                  <p className="text-slate-500 leading-relaxed text-sm">{item.desc}</p>
+                </div>
+              ))}
+           </div>
+        </div>
+      </section>
+
+      <section id="modules" className="py-24 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1/2 bg-slate-50 -z-10 skew-y-3 transform origin-top-left"></div>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+              <span className="text-blue-600 font-bold tracking-wider text-sm uppercase">Core Modules</span>
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Four Steps to Sustainability' : '通往永續未來的四部曲'}</h2>
+            </div>
+            <p className="text-slate-500 max-w-md text-sm md:text-base text-right md:text-left">{lang === 'en' ? 'A comprehensive curriculum guiding students from awareness to action.' : '一套完整的課程地圖，帶領學生從環境意識的覺察，一步步走向具體的永續行動。'}</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
+            {content.modulesData.map((module) => (
+              <div key={module.id} onClick={() => setActiveModule(module)} className="group bg-white rounded-[2.5rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 border border-slate-100 cursor-pointer flex flex-col h-full">
+                <div className="relative h-64 overflow-hidden">
+                  <Image src={module.img} alt={module.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full text-xs font-bold text-slate-800 shadow-sm uppercase tracking-wider">{module.tag}</div>
+                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                </div>
+                <div className="p-8 flex flex-col flex-grow relative">
+                  <div className="absolute -top-10 right-8 w-20 h-20 bg-green-500 text-white rounded-2xl flex items-center justify-center text-3xl font-bold shadow-lg group-hover:bg-green-600 transition-colors transform group-hover:rotate-6">{module.id}</div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-3 mt-2 group-hover:text-green-600 transition-colors">{module.title}</h3>
+                  <p className="text-slate-600 leading-relaxed mb-6 flex-grow">{module.desc}</p>
+                  <div className="flex items-center text-green-600 font-bold text-sm group-hover:translate-x-2 transition-transform">
+                    {lang === 'en' ? 'Explore Module' : '探索課程內容'} <ArrowRight className="ml-2" size={16} />
+                  </div>
                 </div>
               </div>
             ))}
@@ -2231,51 +2145,121 @@ const App = () => {
         </div>
       </section>
 
-      <footer id="contact" className="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
-        <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold text-white tracking-wide">國立屏科實驗高級中等學校</h3>
-              <h4 className="text-sm font-medium text-slate-400">National Experimental High School at Pingtung Science Park</h4>
-              <div className="w-12 h-1 bg-green-500 rounded-full mt-4"></div>
-            </div>
+      <section id="physical-exchange" className="py-20 bg-slate-50">
+          <div className="container mx-auto px-6">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                  <div className="order-2 lg:order-1 relative h-[500px] rounded-[3rem] overflow-hidden shadow-2xl group cursor-pointer" onClick={() => setShowPhysical(true)}>
+                      <Image src={images.m4_group_qaci} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                      <div className="absolute bottom-8 left-8 text-white">
+                          <div className="inline-block px-3 py-1 bg-teal-500 rounded-full text-xs font-bold mb-3 uppercase">Interaction</div>
+                          <h3 className="text-3xl font-bold mb-2">{lang === 'en' ? 'International Guests' : '國際貴賓來訪'}</h3>
+                          <p className="text-slate-200">{lang === 'en' ? 'Australia, Thailand & NSYSU' : '澳洲、泰國與中山大學外籍生'}</p>
+                      </div>
+                  </div>
+                  <div className="order-1 lg:order-2 space-y-8">
+                      <div>
+                          <span className="text-teal-600 font-bold tracking-wider text-sm uppercase">Physical Exchange</span>
+                          <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'In-Person Global Interaction' : '實體國際交流：讓世界走進教室'}</h2>
+                      </div>
+                      <p className="text-lg text-slate-600 leading-relaxed">
+                          {lang === 'en' 
+                            ? 'Beyond online meetings, we were thrilled to host students and teachers from Australia (QACI), Thailand (RMUTT), and international students from NSYSU. These face-to-face interactions brought cultural exchange to life.' 
+                            : '除了線上的互動，我們更榮幸能接待來自澳洲昆士蘭創意產業學院 (QACI)、泰國皇家理工大學 (RMUTT) 的師生，以及中山大學的外籍生。這些面對面的真實互動，讓文化交流變得更有溫度。'}
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                              <h4 className="font-bold text-slate-800 mb-1">QACI (Australia)</h4>
+                              <p className="text-xs text-slate-500">Creative Industries</p>
+                          </div>
+                          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-100">
+                              <h4 className="font-bold text-slate-800 mb-1">RMUTT (Thailand)</h4>
+                              <p className="text-xs text-slate-500">Technology & Engineering</p>
+                          </div>
+                      </div>
+                      <button onClick={() => setShowPhysical(true)} className="px-8 py-4 bg-teal-600 text-white rounded-xl font-bold shadow-lg hover:bg-teal-700 transition-all flex items-center gap-2">
+                          {lang === 'en' ? 'View Interaction Highlights' : '查看交流精彩花絮'} <ArrowRight size={18} />
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </section>
 
-            <div className="space-y-6">
-              <h4 className="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2 inline-block">聯絡資訊 Contact</h4>
-              <ul className="space-y-4">
-                <li className="flex items-center gap-4 group">
-                  <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-green-500 group-hover:bg-green-600 group-hover:text-white transition-all">
-                    <Phone size={18} />
-                  </div>
-                  <div>
-                     <span className="text-xs text-slate-500 block uppercase tracking-wider font-bold">Phone</span>
-                     <span className="text-white font-medium">08-7659025</span>
-                  </div>
-                </li>
+      <div className="py-12 bg-white">
+           <div className="container mx-auto px-6">
+                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-[3rem] p-8 md:p-12 border border-orange-100 flex flex-col lg:flex-row items-center gap-12 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-64 h-64 bg-orange-200/20 rounded-full blur-3xl"></div>
+                    <div className="w-full lg:w-1/2 space-y-6 relative z-10">
+                        <span className="text-orange-600 font-bold tracking-wider text-sm uppercase">Special Event</span>
+                        <h2 className="text-3xl lg:text-4xl font-bold text-slate-900">{lang === 'en' ? 'BSRU Green Mango Expedition' : '臺泰綠色芒果探險隊'}</h2>
+                        <p className="text-lg text-slate-600 leading-relaxed">
+                           {lang === 'en' ? 'A special collaborative journey with Satit BSRU Elementary School from Thailand. Together, we explored carbon footprints and designed sustainable solutions.' : '與泰國 BSRU 國小部的特別合作計畫。我們共同探索碳足跡議題，並一起設計永續解決方案。這是一次深度的跨國共創旅程。'}
+                        </p>
+                        <button onClick={() => setShowBSRU(true)} className="px-8 py-3 bg-orange-500 text-white rounded-full font-bold shadow-md hover:bg-orange-600 transition-all flex items-center gap-2">
+                           {lang === 'en' ? 'Explore the Expedition' : '探索探險隊旅程'} <ArrowRight size={18} />
+                        </button>
+                    </div>
+                    <div className="w-full lg:w-1/2">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-4 translate-y-8">
+                                <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-lg"><Image src={images.bsru_group1} className="w-full h-full object-cover" /></div>
+                            </div>
+                            <div className="space-y-4">
+                                <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-lg"><Image src={images.bsru_group2} className="w-full h-full object-cover" /></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+           </div>
+      </div>
+
+      <AICard lang={lang} mode="preview" />
+
+      <GlobalWall />
+
+      <section id="gallery" className="py-24 bg-white">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <span className="text-pink-500 font-bold tracking-wider text-sm uppercase">Moments</span>
+            <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Captured Memories' : '精選活動花絮'}</h2>
+          </div>
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+            {allHighlights.map((img, index) => (
+              <div key={index} className="break-inside-avoid rounded-2xl overflow-hidden shadow-lg group hover:shadow-2xl transition-all duration-500">
+                <Image src={img} alt={`Gallery ${index}`} className="w-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <footer id="contact" className="bg-slate-900 text-slate-400 py-16 border-t border-slate-800">
+        <div className="container mx-auto px-6">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="col-span-1 md:col-span-2 space-y-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-white rounded-full p-0.5"><Image src={images.about_logo} className="w-full h-full object-cover rounded-full bg-transparent" /></div>
+                <span className="text-xl font-bold text-white tracking-wide">NEHSP</span>
+              </div>
+              <p className="leading-relaxed max-w-sm">{lang === 'en' ? 'National Experimental High School at Pingtung Science Park. Cultivating future talents with technology, humanities, and global vision.' : '國立屏科實驗高級中等學校。以科技、人文與國際視野，培育未來的領袖人才。'}</p>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-6">{lang === 'en' ? 'Contact' : '聯絡資訊'}</h4>
+              <ul className="space-y-4 text-sm">
+                <li className="flex items-center gap-3"><Phone size={18} className="text-green-500 shrink-0" /><span>08-7659025</span></li>
               </ul>
             </div>
-
-            <div className="space-y-6">
-               <h4 className="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2 inline-block">關於我們 About</h4>
-               <p className="text-sm text-slate-400 leading-relaxed">
-                  {lang === 'en' 
-                    ? 'Cultivating future talents with international vision and scientific literacy through bilingual and digital learning.' 
-                    : '致力於雙語教育與數位學習，培育具備國際視野與科學素養的未來人才。'}
-               </p>
-               <div className="flex gap-4 pt-2">
-                  <a href="https://nehs.ptc.edu.tw/" target="_blank" rel="noreferrer" className="text-sm font-bold text-green-400 hover:text-green-300 transition-colors flex items-center gap-1">
-                     Official Website <ExternalLink size={14}/>
-                  </a>
-               </div>
+            <div>
+              <h4 className="text-white font-bold mb-6">{lang === 'en' ? 'Links' : '相關連結'}</h4>
+              <ul className="space-y-4 text-sm">
+                <li><a href="https://nehs.ptc.edu.tw/" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition-colors flex items-center gap-2"><ArrowRight size={14}/> {lang === 'en' ? 'Official Website' : '學校官網'}</a></li>
+                <li><a href="#" className="hover:text-green-400 transition-colors flex items-center gap-2"><ArrowRight size={14}/> {lang === 'en' ? 'Facebook' : 'Facebook 粉絲專頁'}</a></li>
+              </ul>
             </div>
           </div>
-
-          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
             <p>&copy; 2025 NEHSP Elementary Department. All rights reserved.</p>
-            <div className="flex gap-6 mt-4 md:mt-0">
-               <span className="hover:text-slate-300 cursor-pointer transition-colors">Privacy Policy</span>
-               <span className="hover:text-slate-300 cursor-pointer transition-colors">Terms of Use</span>
-            </div>
+            <p>{lang === 'en' ? 'Designed for Digital Learning Program' : '教育部數位學習深耕計畫成果網頁'}</p>
           </div>
         </div>
       </footer>
