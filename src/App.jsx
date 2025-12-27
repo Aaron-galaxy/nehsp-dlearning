@@ -1,4 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { 
+  Layout, 
+  Home, 
+  BarChart2, 
+  Settings, 
+  Bell, 
+  Search, 
+  Plus, 
+  MoreHorizontal,
+  AlertCircle,
+  TrendingUp,
+  Phone, 
+  Mail   
+} from 'lucide-react';
 
 // ==============================================================================
 // 🎨 [圖示元件區] 使用 SVG 繪製
@@ -231,7 +245,6 @@ const RotateCw = (p) => (
     <path d="M21 3v5h-5" />
   </IconBase>
 );
-// 新增 Newspaper 圖示
 const Newspaper = (p) => (
   <IconBase {...p}>
     <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" />
@@ -244,9 +257,9 @@ const Newspaper = (p) => (
 // ==============================================================================
 // 🖼️ [強化的圖片元件]
 // ==============================================================================
-const Image = ({ src, alt, className, ...props }) => {
+const Image = ({ src, alt, className = '', ...props }) => {
   const [currentSrc, setCurrentSrc] = useState(src);
-  const [attempt, setAttempt] = useState(0); 
+  const [attempt, setAttempt] = useState(0);
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
@@ -277,11 +290,14 @@ const Image = ({ src, alt, className, ...props }) => {
     }
   };
 
+  // 判斷是否已經有傳入背景色 class，若有則不使用預設的 bg-slate-200
+  const bgClass = className.includes('bg-') ? '' : 'bg-slate-200';
+
   return (
     <img
       src={currentSrc}
       alt={alt || "image"}
-      className={`${className} ${isError ? 'opacity-80 grayscale' : ''} bg-slate-200 transition-all duration-500`}
+      className={`${className} ${isError ? 'opacity-80 grayscale' : ''} ${bgClass} transition-all duration-500`}
       onError={handleError}
       referrerPolicy="no-referrer"
       loading="lazy"
@@ -307,15 +323,16 @@ const exhibitionImages = {
 };
 
 const images = {
+  // 校徽 Logo
+  about_logo: 'https://drive.google.com/file/d/1xPx7JjEhxiL7-HpNUWdRYB9yvRyjOZat/view?usp=drive_link',
+  
   hero: 'https://drive.google.com/thumbnail?id=1CENEGgXFGqpAhwhpgLD6O1s2Y7KRVveh&sz=w2000',
   about_philosophy: 'https://drive.google.com/uc?export=download&id=1RxhVPTvNR2WxumjSrpi4DzaR9kSx_2iF',
   about_activity: 'https://drive.google.com/thumbnail?id=1H-1wVOa5O3cRgKtEJAxMJupGOrqUk7ZI&sz=w2000',
   about_campus: 'https://drive.google.com/thumbnail?id=1H-1wVOa5O3cRgKtEJAxMJupGOrqUk7ZI&sz=w2000',
   about_intro1: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   about_intro2: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-  about_logo: 'https://drive.google.com/thumbnail?id=1xPx7JjEhxiL7-HpNUWdRYB9yvRyjOZat&sz=w2000',
   about_mascot: 'https://drive.google.com/thumbnail?id=1d9SyNj4LQsz5tsu-oL5xL9xQdgOsUgYL&sz=w2000',
-  // 新增：校園活動照片
   about_traffic: 'https://drive.google.com/thumbnail?id=1zc8jpk9zYXTzrJTHGhU2ne0sju9bhjcJ&sz=w2000',
   about_basketball: 'https://drive.google.com/thumbnail?id=1ivT8OeoHRTCgImZYj2y7DRTXzc8WxspB&sz=w2000',
   
@@ -335,6 +352,17 @@ const images = {
   m2_irrigation_finished: 'https://drive.google.com/thumbnail?id=1g_Rup9CJKhZg0XXkrI2Y31VOtbhiPoz4&sz=w2000',
   m2_irrigation_make1: 'https://drive.google.com/thumbnail?id=11DbttZXGJLZw6IcCC43wPxLVpUU_wqad&sz=w2000',
   m2_irrigation_make2: 'https://drive.google.com/thumbnail?id=1o3TQjMNn-aLQPDkYJEN6dBSXOLYd0BjS&sz=w2000',
+  
+  // 模組二教學照片
+  m2_teach_new1: 'https://drive.google.com/thumbnail?id=1NYVmMENH6ZS1dBlOU_6p0kwkSxzjlC5u&sz=w2000',
+  m2_student_new1: 'https://drive.google.com/thumbnail?id=1SJMeYfiauga11yC6sSJwc5G9eOpRlSSB&sz=w2000',
+  m2_student_new2: 'https://drive.google.com/thumbnail?id=12tZCRx9YWKv04WgBQnNW8lMPjhsNjcIt&sz=w2000',
+  m2_student_new3: 'https://drive.google.com/thumbnail?id=1pwRCSAc0k138SrqDG7SE9xeg4s3rj-v4&sz=w2000',
+  m2_student_new5: 'https://drive.google.com/thumbnail?id=1rOI3WocMN1ziYLNbO8W6tiQEq4o_WN-h&sz=w2000',
+
+  m2_teach_1: 'https://drive.google.com/thumbnail?id=18CNFVEQgvdigutbk1QroufkBQPML0QYf&sz=w2000',
+  m2_teach_2: 'https://drive.google.com/thumbnail?id=1K_wfFsgsfj_238-DL0h5lZFTL2KumxHo&sz=w2000',
+  m2_teach_3: 'https://drive.google.com/thumbnail?id=1Vl1uGhBOO645gHjtHBHrM93f2Sx5OOUq&sz=w2000',
   m2_gallery: [
     'https://drive.google.com/thumbnail?id=11DbttZXGJLZw6IcCC43wPxLVpUU_wqad&sz=w2000',
     'https://drive.google.com/thumbnail?id=1o3TQjMNn-aLQPDkYJEN6dBSXOLYd0BjS&sz=w2000',
@@ -355,7 +383,7 @@ const images = {
   ],
   m4_cover: 'https://drive.google.com/thumbnail?id=1eb1gOJ31LR_JgfcCid09UHqtBDbRd04i&sz=w2000',
   m4_step1: 'https://drive.google.com/thumbnail?id=1wSHUSW5fVXkEREV2omjsV0j50zYMEvCI&sz=w2000',
-  m4_satsuki_0513_1: 'https://drive.google.com/thumbnail?id=1wSHUSW5fVXkEREV2omjsV0j50zYMEvCI&sz=w2000', 
+  m4_satsuki_0513_1: 'https://drive.google.com/thumbnail?id=1wSHUSW5fVXkEREV2omjsV0j50zYMEvCI&sz=w2000',
   m4_satsuki_0513_2: 'https://drive.google.com/thumbnail?id=16BQSd1iwTfK3hx-t-0p0QznOakYG9Z4r&sz=w2000',
   m4_satsuki_0513_3: 'https://drive.google.com/thumbnail?id=1e0ZN6K6M2HzqoCz1OVt9HD7ugpU17l2g&sz=w2000',
   m4_satsuki_0513_4: 'https://drive.google.com/thumbnail?id=1baPWB4mkk-108ntdm--IYr6lKRieLVEg&sz=w2000',
@@ -408,7 +436,7 @@ const images = {
   m4_online_japan: 'https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
   m4_physical_aus: 'https://drive.google.com/thumbnail?id=1vvn5Vgy4bHGruxk3xaJBINROERPdpowS&sz=w2000',
   m4_gallery: [
-    'https://drive.google.com/thumbnail?id=1iGcBkHxLJFT9oiqEWed4B13MeD87hIAk&sz=w2000', 
+    'https://drive.google.com/thumbnail?id=1iGcBkHxLJFT9oiqEWed4B13MeD87hIAk&sz=w2000',
     'https://drive.google.com/thumbnail?id=17sPfEjH68JhY8G1dpmYXsxTeGwJSwsko&sz=w2000',
     'https://drive.google.com/thumbnail?id=1zQvehyP8XW_P2JMnt-orNR-Y74fSin6F&sz=w2000',
     'https://drive.google.com/thumbnail?id=18pUzENnG7u0Rwag1my7_7lrKFbYrWxU0&sz=w2000',
@@ -505,7 +533,6 @@ const GlobalWall = () => {
   const mapContainerRef = useRef(null);
   const [d3Loaded, setD3Loaded] = useState(false);
 
-  // 1. 動態載入 D3.js 與 TopoJSON
   useEffect(() => {
     const loadScript = (src) => {
       return new Promise((resolve, reject) => {
@@ -529,76 +556,72 @@ const GlobalWall = () => {
     }).catch(err => console.error("Failed to load map libraries", err));
   }, []);
 
-  // 2. 整合現有網站資料與新地圖座標
-  // 座標格式: [經度 (Lng), 緯度 (Lat)]
   const locations = [
-    { 
-      id: 'tw', 
-      name: 'NEHSP (Pingtung)', 
-      coords: [120.486, 22.668], 
-      type: 'source', 
-      flag: '🇹🇼', 
-      school: 'NEHSP', 
+    {
+      id: 'tw',
+      name: 'NEHSP (Pingtung)',
+      coords: [120.486, 22.668],
+      type: 'source',
+      flag: '🇹🇼',
+      school: 'NEHSP',
       website: 'https://nehs.ptc.edu.tw/',
       desc: 'Our Home Base'
     },
-    { 
-      id: 'jp1', 
-      name: 'Satsuki Gakuen (Osaka)', 
-      coords: [135.56, 34.73], 
-      type: 'target', 
-      flag: '🇯🇵', 
-      school: 'Satsukigakuen', 
-      desc: 'Mango Exchange & SDGs', 
-      website: 'https://www-city-moriguchi-osaka-jp.translate.goog/kakukanoannai/moriguchishikyoikuiinkai/gakko/gimukyouikugakko/satsukigakuen/index.html' 
+    {
+      id: 'jp1',
+      name: 'Satsuki Gakuen (Osaka)',
+      coords: [135.56, 34.73],
+      type: 'target',
+      flag: '🇯🇵',
+      school: 'Satsukigakuen',
+      desc: 'Mango Exchange & SDGs',
+      website: 'https://www-city-moriguchi-osaka-jp.translate.goog/kakukanoannai/moriguchishikyoikuiinkai/gakko/gimukyouikugakko/satsukigakuen/index.html'
     },
-    { 
-      id: 'jp2', 
-      name: 'Minamata 2nd ES (Kumamoto)', 
-      coords: [130.40, 32.21], 
-      type: 'target', 
-      flag: '🇯🇵', 
-      school: 'Minamata 2nd ES', 
-      desc: 'Environmental Education' 
+    {
+      id: 'jp2',
+      name: 'Minamata 2nd ES (Kumamoto)',
+      coords: [130.40, 32.21],
+      type: 'target',
+      flag: '🇯🇵',
+      school: 'Minamata 2nd ES',
+      desc: 'Environmental Education'
     },
-    { 
-      id: 'au', 
-      name: 'QACI (Brisbane)', 
-      coords: [153.02, -27.45], 
-      type: 'target', 
-      flag: '🇦🇺', 
-      school: 'QACI', 
-      desc: 'Global Forum' 
+    {
+      id: 'au',
+      name: 'QACI (Brisbane)',
+      coords: [153.02, -27.45],
+      type: 'target',
+      flag: '🇦🇺',
+      school: 'QACI',
+      desc: 'Global Forum'
     },
-    { 
-      id: 'th1', 
-      name: 'Satit BSRU (Bangkok)', 
-      coords: [100.48, 13.73], 
-      type: 'target', 
-      flag: '🇹🇭', 
-      school: 'BSRU', 
-      desc: 'Cultural Co-creation' 
+    {
+      id: 'th1',
+      name: 'Satit BSRU (Bangkok)',
+      coords: [100.48, 13.73],
+      type: 'target',
+      flag: '🇹🇭',
+      school: 'BSRU',
+      desc: 'Cultural Co-creation'
     },
-    { 
-      id: 'th2', 
-      name: 'RMUTT (Pathum Thani)', 
-      coords: [100.72, 14.03], 
-      type: 'target', 
-      flag: '🇹🇭', 
-      school: 'RMUTT', 
-      desc: 'Tech & Engineering' 
+    {
+      id: 'th2',
+      name: 'RMUTT (Pathum Thani)',
+      coords: [100.72, 14.03],
+      type: 'target',
+      flag: '🇹🇭',
+      school: 'RMUTT',
+      desc: 'Tech & Engineering'
     }
   ];
 
-  // 3. 初始化並繪製地圖
   useEffect(() => {
     if (!d3Loaded || !mapContainerRef.current || !window.d3 || !window.topojson) return;
 
     const container = mapContainerRef.current;
     const width = container.clientWidth;
-    const height = container.clientHeight; // 使用容器高度
+    const height = container.clientHeight;
 
-    // 清除舊的 SVG
     window.d3.select(container).selectAll("svg").remove();
 
     const svg = window.d3.select(container)
@@ -606,46 +629,41 @@ const GlobalWall = () => {
       .attr("width", width)
       .attr("height", height)
       .attr("viewBox", `0 0 ${width} ${height}`)
-      .style("background-color", "#1e293b"); // Slate-800 to match theme
+      .style("background-color", "#1e293b");
 
     const g = svg.append("g");
 
-    // 投影設定：聚焦於亞太地區
-    // 根據容器寬度動態調整縮放比例
     const projection = window.d3.geoMercator()
-      .center([135, 15]) // 中心點設在台灣/菲律賓東方海域，平衡畫面
-      .scale(width / 1.8) // 動態縮放
+      .center([135, 15])
+      .scale(width / 1.8)
       .translate([width / 2, height / 2]);
 
     const pathGenerator = window.d3.geoPath().projection(projection);
 
-    // 載入世界地圖資料
     window.d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
       const countries = window.topojson.feature(world, world.objects.countries);
 
-      // 繪製國家
       g.selectAll("path")
         .data(countries.features)
         .enter().append("path")
         .attr("d", pathGenerator)
-        .attr("fill", "#334155") // Slate-700
-        .attr("stroke", "#475569") // Slate-600
+        .attr("fill", "#334155")
+        .attr("stroke", "#475569")
         .attr("stroke-width", 0.5)
         .style("transition", "fill 0.3s")
         .on("mouseover", function() { window.d3.select(this).attr("fill", "#475569"); })
         .on("mouseout", function() { window.d3.select(this).attr("fill", "#334155"); });
 
-      // 繪製連線 (從屏東出發)
       const pingtungCoords = locations.find(l => l.id === 'tw').coords;
-      
+
       locations.forEach(partner => {
         if (partner.id === 'tw') return;
         const link = {type: "LineString", coordinates: [pingtungCoords, partner.coords]};
-        
+
         g.append("path")
           .attr("d", pathGenerator(link))
           .attr("fill", "none")
-          .attr("stroke", "#22c55e") // Green-500
+          .attr("stroke", "#22c55e")
           .attr("stroke-width", 2)
           .attr("stroke-linecap", "round")
           .attr("opacity", 0.6)
@@ -656,17 +674,15 @@ const GlobalWall = () => {
           .attr("stroke-dashoffset", 0);
       });
 
-      // 繪製脈衝效果與點
       locations.forEach(loc => {
         const coords = projection(loc.coords);
         if (!coords) return;
 
-        // 脈衝圈
         g.append("circle")
           .attr("cx", coords[0])
           .attr("cy", coords[1])
           .attr("r", 8)
-          .attr("fill", loc.id === 'tw' ? "#ef4444" : "#f59e0b") // TW: Red, Others: Amber
+          .attr("fill", loc.id === 'tw' ? "#ef4444" : "#f59e0b")
           .attr("opacity", 0)
           .append("animate")
           .attr("attributeName", "r")
@@ -674,7 +690,7 @@ const GlobalWall = () => {
           .attr("to", 25)
           .attr("dur", "2s")
           .attr("repeatCount", "indefinite")
-          .select(function() { return this.parentNode; }) // Go back to circle
+          .select(function() { return this.parentNode; })
           .append("animate")
           .attr("attributeName", "opacity")
           .attr("from", 0.6)
@@ -682,7 +698,6 @@ const GlobalWall = () => {
           .attr("dur", "2s")
           .attr("repeatCount", "indefinite");
 
-        // 實心點
         g.append("circle")
           .attr("cx", coords[0])
           .attr("cy", coords[1])
@@ -698,20 +713,19 @@ const GlobalWall = () => {
           .on("mouseover", function() { window.d3.select(this).attr("r", 9); })
           .on("mouseout", function() { window.d3.select(this).attr("r", 6); });
 
-        // 文字標籤 (避免重疊的簡易邏輯)
         let labelX = coords[0];
         let labelY = coords[1] - 15;
         let anchor = "middle";
 
-        if (loc.id.includes('jp')) { labelX += 10; anchor = "start"; } // 日本往右
-        if (loc.id === 'tw') { labelY += 30; } // 台灣往下
-        if (loc.id === 'au') { labelY += 25; } // 澳洲往下
-        if (loc.id.includes('th')) { labelX -= 10; anchor = "end"; } // 泰國往左
+        if (loc.id.includes('jp')) { labelX += 10; anchor = "start"; }
+        if (loc.id === 'tw') { labelY += 30; }
+        if (loc.id === 'au') { labelY += 25; }
+        if (loc.id.includes('th')) { labelX -= 10; anchor = "end"; }
 
         g.append("text")
           .attr("x", labelX)
           .attr("y", labelY)
-          .text(loc.name.split(' ')[0]) // 只顯示簡短名稱
+          .text(loc.name.split(' ')[0])
           .attr("text-anchor", anchor)
           .attr("font-size", "12px")
           .attr("font-weight", "bold")
@@ -719,17 +733,16 @@ const GlobalWall = () => {
           .style("text-shadow", "0 2px 4px rgba(0,0,0,0.8)")
           .style("pointer-events", "none");
       });
-      
-      // Zoom 行為
+
       const zoom = window.d3.zoom()
         .scaleExtent([1, 8])
         .on("zoom", (event) => g.attr("transform", event.transform));
-      
+
       svg.call(zoom);
 
     });
 
-  }, [d3Loaded]); // 依賴 d3Loaded 狀態
+  }, [d3Loaded]);
 
   return (
     <div className="py-20 bg-slate-900 relative overflow-hidden">
@@ -740,12 +753,8 @@ const GlobalWall = () => {
           <p className="text-slate-500 mt-2 text-sm">Interactive D3.js Map • 點擊光點探索</p>
         </div>
 
-        {/* 地圖容器 */}
         <div className="relative w-full aspect-[4/3] md:aspect-[16/9] lg:aspect-[2/1] bg-slate-800 rounded-3xl border border-slate-700 shadow-2xl overflow-hidden group">
-          {/* D3 Map 將會渲染在這個 div 中 */}
           <div ref={mapContainerRef} className="w-full h-full cursor-move"></div>
-          
-          {/* 資訊卡 (維持原有的 React 元件設計，重用性高) */}
           {activePartner && (
             <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 bg-white/95 backdrop-blur-md p-6 rounded-2xl shadow-2xl max-w-xs animate-fade-in text-slate-800 z-30 border border-slate-200 pointer-events-auto">
               <div className="flex justify-between items-start mb-2"><div className="text-3xl mb-2">{activePartner.flag}</div><button onClick={(e) => { e.stopPropagation(); setActivePartner(null); }} className="text-slate-400 hover:text-slate-600"><X size={16} /></button></div>
@@ -764,111 +773,107 @@ const GlobalWall = () => {
 
 const AICard = ({ lang, mode = 'preview' }) => {
   const [flippedCard, setFlippedCard] = useState(null);
-   
-  // 定義12張學生作品資料 (含中英文對照)
+
   const cards = [
-    { 
-      id: 1, 
-      img: 'https://drive.google.com/thumbnail?id=1skjP06oO0jFyHMX7ukM5GttKNJaAweFk&sz=w2000', 
-      title_zh: '拯救地球，別讓木瓜泡溫泉', 
+    {
+      id: 1,
+      img: 'https://drive.google.com/thumbnail?id=1skjP06oO0jFyHMX7ukM5GttKNJaAweFk&sz=w2000',
+      title_zh: '拯救地球，別讓木瓜泡溫泉',
       desc_zh: '如果海平面上升，木瓜都會泡在水裡',
       title_en: 'Save the Earth, Don\'t Let Papayas Soak in Hot Springs',
       desc_en: 'If sea levels rise, papayas will be soaked in water.'
     },
-    { 
-      id: 2, 
-      img: 'https://drive.google.com/thumbnail?id=1sDfPjWErghOlapJax6Fqkv5gXXndcK7v&sz=w2000', 
-      title_zh: '地球發燒，米飯變糟', 
+    {
+      id: 2,
+      img: 'https://drive.google.com/thumbnail?id=1sDfPjWErghOlapJax6Fqkv5gXXndcK7v&sz=w2000',
+      title_zh: '地球發燒，米飯變糟',
       desc_zh: '如果全球暖化影響，米飯都會哭泣，變得不好吃。',
       title_en: 'Earth Has a Fever, Rice Gets Bad',
       desc_en: 'Global warming makes rice cry and taste bad.'
     },
-    { 
-      id: 3, 
-      img: 'https://drive.google.com/thumbnail?id=1tYanueHvlsOUWya703gwAqsiQmTNy-MP&sz=w2000', 
-      title_zh: '台灣溺水了', 
+    {
+      id: 3,
+      img: 'https://drive.google.com/thumbnail?id=1tYanueHvlsOUWya703gwAqsiQmTNy-MP&sz=w2000',
+      title_zh: '台灣溺水了',
       desc_zh: '如果海平面上升，臺灣會被淹沒',
       title_en: 'Taiwan is Drowning',
       desc_en: 'If sea levels rise, Taiwan will be submerged.'
     },
-    { 
-      id: 4, 
-      img: 'https://drive.google.com/thumbnail?id=1dI7S8Rdg1EzSS3W10kQ913yhU_T5g-cG&sz=w2000', 
-      title_zh: '再熱下去，哈密瓜要變苦瓜了', 
+    {
+      id: 4,
+      img: 'https://drive.google.com/thumbnail?id=1dI7S8Rdg1EzSS3W10kQ913yhU_T5g-cG&sz=w2000',
+      title_zh: '再熱下去，哈密瓜要變苦瓜了',
       desc_zh: '如果全球暖化影響，香甜的哈密瓜就會變成苦瓜',
       title_en: 'If It Gets Hotter, Melons Will Turn Bitter',
       desc_en: 'Global warming might turn sweet cantaloupes into bitter melons.'
     },
-    { 
-      id: 5, 
-      img: 'https://drive.google.com/thumbnail?id=14QK6NGsJiYWv-UdYC2J2vxLXI1YYhTN-&sz=w2000', 
-      title_zh: '全球暖化，熱的牛轉乾坤', 
+    {
+      id: 5,
+      img: 'https://drive.google.com/thumbnail?id=14QK6NGsJiYWv-UdYC2J2vxLXI1YYhTN-&sz=w2000',
+      title_zh: '全球暖化，熱的牛轉乾坤',
       desc_zh: '當天氣變熱，牛奶產量也會下降',
       title_en: 'Global Warming, Turning Cows Around',
       desc_en: 'When the weather gets hot, milk production drops.'
     },
-    { 
-      id: 6, 
-      img: 'https://drive.google.com/thumbnail?id=1BhZThxbTlQi8F2VLXc65xtWjPMDGl2pT&sz=w2000', 
-      title_zh: '海平面上升，蓮霧無處生', 
+    {
+      id: 6,
+      img: 'https://drive.google.com/thumbnail?id=1BhZThxbTlQi8F2VLXc65xtWjPMDGl2pT&sz=w2000',
+      title_zh: '海平面上升，蓮霧無處生',
       desc_zh: '如果海平面上升，就沒有屏東林邊好吃的蓮霧了',
       title_en: 'Sea Levels Rise, No Place for Wax Apples',
       desc_en: 'Rising sea levels mean no more delicious Linbian wax apples.'
     },
-    { 
-      id: 7, 
-      img: 'https://drive.google.com/thumbnail?id=1diL3figeE_5sk0mb50JUOpjOfifE0q2k&sz=w2000', 
-      title_zh: '全球暖化，我好可', 
+    {
+      id: 7,
+      img: 'https://drive.google.com/thumbnail?id=1diL3figeE_5sk0mb50JUOpjOfifE0q2k&sz=w2000',
+      title_zh: '全球暖化，我好可',
       desc_zh: '全球暖化讓可可缺水，只能大喊我好可',
       title_en: 'Global Warming, I\'m So "Cocoa" Thirsty',
       desc_en: 'Global warming leaves cocoa thirsty, shouting for water.'
     },
-    { 
-      id: 8, 
-      img: 'https://drive.google.com/thumbnail?id=1jw_UykruOr5GLdFjdYUms6y2ZfChvxpq&sz=w2000', 
-      title_zh: '颱風不停，哈密瓜變酸密瓜', 
+    {
+      id: 8,
+      img: 'https://drive.google.com/thumbnail?id=1jw_UykruOr5GLdFjdYUms6y2ZfChvxpq&sz=w2000',
+      title_zh: '颱風不停，哈密瓜變酸密瓜',
       desc_zh: '如果全球暖化影響，香甜的哈密瓜就會變成苦瓜',
       title_en: 'Typhoons Don\'t Stop, Melons Turn Sour',
       desc_en: 'Extreme weather affects the sweetness of cantaloupes.'
     },
-    { 
-      id: 9, 
-      img: 'https://drive.google.com/thumbnail?id=10G8lZr535D0y2ESsznfabWqXrIjCglR_&sz=w2000', 
-      title_zh: '乾旱出走，樹葉全部離枝了', 
+    {
+      id: 9,
+      img: 'https://drive.google.com/thumbnail?id=10G8lZr535D0y2ESsznfabWqXrIjCglR_&sz=w2000',
+      title_zh: '乾旱出走，樹葉全部離枝了',
       desc_zh: '如果全球暖化影響，樹葉將不會出現在樹上了，都熱死了',
       title_en: 'Drought Strikes, Leaves Leave the Branches',
       desc_en: 'Global warming causes trees to lose leaves from the heat.'
     },
-    { 
-      id: 10, 
-      img: 'https://drive.google.com/thumbnail?id=1gdi8eofSAvVuIUwm9Ft4DfZDolM3K9xP&sz=w2000', 
-      title_zh: '可可哭了，巧克力變溶液', 
+    {
+      id: 10,
+      img: 'https://drive.google.com/thumbnail?id=1gdi8eofSAvVuIUwm9Ft4DfZDolM3K9xP&sz=w2000',
+      title_zh: '可可哭了，巧克力變溶液',
       desc_zh: '全球暖化讓可可都融化了',
       title_en: 'Cocoa Cries, Chocolate Melts',
       desc_en: 'Global warming is melting the cocoa.'
     },
-    { 
-      id: 11, 
-      img: 'https://drive.google.com/thumbnail?id=15Nw2oE_ZMAkc9niFxFJBelAUyCDI48AG&sz=w2000', 
-      title_zh: '海平面上升，沙灘變泳池', 
+    {
+      id: 11,
+      img: 'https://drive.google.com/thumbnail?id=15Nw2oE_ZMAkc9niFxFJBelAUyCDI48AG&sz=w2000',
+      title_zh: '海平面上升，沙灘變泳池',
       desc_zh: '海平面上升讓沙灘變成游泳池，我們要跟魚做朋友了',
       title_en: 'Sea Levels Rise, Beaches Become Pools',
       desc_en: 'Rising seas turn beaches into pools; we\'ll be friends with fish.'
     },
-    { 
-      id: 12, 
-      img: 'https://drive.google.com/thumbnail?id=1QE2sgg8Vc2tXqLGGZIyeiUs9I3JiV3JU&sz=w2000', 
-      title_zh: '地球火爆，別再碳氣', 
+    {
+      id: 12,
+      img: 'https://drive.google.com/thumbnail?id=1QE2sgg8Vc2tXqLGGZIyeiUs9I3JiV3JU&sz=w2000',
+      title_zh: '地球火爆，別再碳氣',
       desc_zh: '地球再熱下去，火山就要爆發了',
       title_en: 'Earth is Furious, Stop the Carbon',
       desc_en: 'If the Earth gets hotter, volcanoes might erupt.'
     },
   ];
 
-  // 根據 mode 篩選顯示的卡片
-  // preview: 首頁只顯示 3 張 (ID: 2, 3, 6)
-  // full: 模組一內頁顯示全部
-  const displayCards = mode === 'preview' 
+  const displayCards = mode === 'preview'
     ? cards.filter(c => [2, 3, 6].includes(c.id))
     : cards;
 
@@ -881,24 +886,21 @@ const AICard = ({ lang, mode = 'preview' }) => {
             {lang === 'en' ? 'AI Slogans: Student Creativity' : 'AI 標語猜猜看：學生創意作品'}
           </h2>
           <p className="text-slate-500 mt-2">
-            {lang === 'en' 
-              ? 'Explore student-created AI posters combining local agriculture with climate issues.' 
+            {lang === 'en'
+              ? 'Explore student-created AI posters combining local agriculture with climate issues.'
               : '欣賞學生運用 AI 工具，結合在地農產與氣候議題所創作的減碳海報。'}
           </p>
         </div>
-        {/* RWD Grid Layout */}
         <div className={`grid grid-cols-1 sm:grid-cols-2 ${mode === 'preview' ? 'lg:grid-cols-3' : 'lg:grid-cols-3 xl:grid-cols-4'} gap-8`}>
           {displayCards.map((card) => (
             <div key={card.id} className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group h-full">
-              {/* Image Section */}
-              <div className="relative w-full pt-[133%] overflow-hidden bg-slate-100"> {/* 3:4 aspect ratio */}
+              <div className="relative w-full pt-[133%] overflow-hidden bg-slate-100">
                  <div className="absolute inset-0">
                     <Image src={card.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={lang === 'en' ? card.title_en : card.title_zh} />
                  </div>
                  <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-md text-white text-[10px] font-bold px-2 py-1 rounded-md border border-white/20">AI Art</div>
               </div>
-               
-              {/* Text Content Section */}
+
               <div className="p-6 flex flex-col flex-grow bg-white relative z-10">
                 <h3 className="text-lg font-bold text-slate-800 mb-2 leading-tight group-hover:text-purple-600 transition-colors">
                   {lang === 'en' ? card.title_en : card.title_zh}
@@ -911,8 +913,7 @@ const AICard = ({ lang, mode = 'preview' }) => {
             </div>
           ))}
         </div>
-        
-        {/* 新增：數位繪本嵌入區塊 (Digital Picture Book Section) */}
+
         <div className="mt-24 bg-slate-50 rounded-[2.5rem] p-8 md:p-12 border border-slate-200 relative overflow-hidden">
            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl -z-10"></div>
            <div className="text-center mb-8">
@@ -920,7 +921,7 @@ const AICard = ({ lang, mode = 'preview' }) => {
               <h3 className="text-2xl md:text-3xl font-bold text-slate-900">{lang === 'en' ? 'Student Creation: Digital Picture Book' : '學生創作：數位繪本'}</h3>
               <p className="text-slate-500 mt-2 max-w-2xl mx-auto">{lang === 'en' ? 'A storybook created by students to illustrate the importance of environmental protection.' : '學生們發揮創意，將氣候變遷與環境保護的觀念轉化為生動的繪本故事。'}</p>
            </div>
-           
+
            <div className="relative w-full aspect-[16/9] md:aspect-[16/10] rounded-2xl overflow-hidden shadow-2xl bg-slate-200 border-4 border-white">
               <iframe
                 loading="lazy"
@@ -931,12 +932,12 @@ const AICard = ({ lang, mode = 'preview' }) => {
                 title="Student Picture Book"
               ></iframe>
            </div>
-           
+
            <div className="text-center mt-8">
-              <a 
-                href="https://www.canva.com/design/DAG10bSaebs/jRg_voivuBxmYlosA_80IA/view?utm_content=DAG10bSaebs&utm_campaign=designshare&utm_medium=embeds&utm_source=link" 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <a
+                href="https://www.canva.com/design/DAG10bSaebs/jRg_voivuBxmYlosA_80IA/view?utm_content=DAG10bSaebs&utm_campaign=designshare&utm_medium=embeds&utm_source=link"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:bg-slate-700 transition-all hover:-translate-y-1"
               >
                  {lang === 'en' ? 'Open in Full Screen' : '開啟全螢幕閱讀'} <ExternalLink size={18} />
@@ -949,16 +950,13 @@ const AICard = ({ lang, mode = 'preview' }) => {
   );
 };
 
-// ==============================================================================
-// 4. 成果展詳情頁面元件 (Exhibition Detail Page)
-// ==============================================================================
 const ExhibitionDetail = ({ onBack, lang }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   const gallery = [
-    exhibitionImages.exh_intro1, exhibitionImages.exh_intro2, exhibitionImages.exh_intro3, 
+    exhibitionImages.exh_intro1, exhibitionImages.exh_intro2, exhibitionImages.exh_intro3,
     exhibitionImages.exh_intro4, exhibitionImages.exh_intro5, exhibitionImages.exh_intro6
   ];
-  
+
   return (
     <div className="fixed inset-0 z-[100] bg-white overflow-y-auto overflow-x-hidden animate-fade-in font-sans">
       <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
@@ -1020,7 +1018,6 @@ const ExhibitionDetail = ({ onBack, lang }) => {
   );
 };
 
-
 const AboutDetail = ({ onBack, lang }) => {
   useEffect(() => { window.scrollTo(0, 0); }, []);
   return (
@@ -1029,27 +1026,26 @@ const AboutDetail = ({ onBack, lang }) => {
         <button onClick={onBack} className="flex items-center gap-2 text-slate-600 hover:text-green-600 font-bold transition-colors"><ArrowLeft size={20} />{lang === 'en' ? 'Back' : '返回'}</button>
         <span className="font-bold text-slate-800">{lang === 'en' ? 'About Us' : '關於我們'}</span>
       </div>
-      
-      {/* Hero Section */}
+
       <div className="relative h-[50vh] w-full overflow-hidden bg-slate-900">
         <div className="absolute inset-0"><Image src={images.about_philosophy} alt="Philosophy" className="w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-1000" /></div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
         <div className="absolute bottom-0 left-0 p-8 md:p-16 w-full max-w-5xl mx-auto text-white">
           <h1 className="text-3xl md:text-5xl font-extrabold mb-4 leading-tight">{lang === 'en' ? 'Learning on a Journey to the World' : '走向世界的學習旅程'}</h1>
-          <p className="text-lg text-slate-200 max-w-2xl">{lang === 'en' ? 'We believe that learning happens not only inside the classroom but also on a journey to the world. Cultivating proactive communicators and problem-solvers.' : '我們相信學習不僅僅發生在教室內，更是走向世界的旅程。培育學生成為主動的溝通者與問題解決者。'}</p>
+          <p className="text-lg text-slate-200 max-w-2xl">{lang === 'en' ? 'We believe that learning happens not only inside the classroom but also on a journey to the world. Cultivating proactive communicators and problem-solvers.' : '我們相信學習不僅僅發生在教室內，更是走向世界的旅程。培育學生成為主動的溝通者與問題解決者。'}
+          </p>
         </div>
       </div>
 
-      {/* Intro & Mission & Identity */}
       <div className="container mx-auto px-6 py-16 max-w-5xl">
-        {/* School Identity: Logo & Name */}
         <div className="flex flex-col md:flex-row items-center justify-center gap-8 mb-16 animate-fade-in-up">
-           <div className="w-32 h-32 md:w-40 md:h-40 relative flex-shrink-0">
-               <Image src={images.about_logo} className="w-full h-full object-contain drop-shadow-lg filter" alt="School Logo" />
+           {/* 校徽區域：加大尺寸、圓形白底、陰影優化 */}
+           <div className="w-40 h-40 md:w-52 md:h-52 relative flex-shrink-0 bg-white rounded-full p-2 shadow-2xl ring-4 ring-slate-100 overflow-hidden transition-transform duration-500 hover:scale-105">
+               <Image src={images.about_logo} className="w-full h-full object-cover rounded-full bg-transparent" alt="School Logo" />
            </div>
            <div className="text-center md:text-left">
-               <span className="text-green-600 font-bold tracking-wider text-sm uppercase">{lang === 'en' ? 'Our School' : '國立屏科實驗高級中學'}</span>
-               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2 mb-2">{lang === 'en' ? 'NEHSP' : '屏科實中雙語部'}</h2>
+               <span className="text-green-600 font-bold tracking-wider text-sm uppercase">{lang === 'en' ? 'Our School' : '國立屏科實驗高級中等學校'}</span>
+               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2 mb-2">{lang === 'en' ? 'NEHSP' : '國立屏科實驗高級中等學校國小部'}</h2>
                <p className="text-slate-500 max-w-md">{lang === 'en' ? 'National Experimental High School at Pingtung Science Park' : '培養接軌國際、具備科學素養的未來人才'}</p>
            </div>
         </div>
@@ -1074,7 +1070,6 @@ const AboutDetail = ({ onBack, lang }) => {
         </div>
       </div>
 
-      {/* Videos & Mascot Section (Rearranged) */}
       <div className="bg-slate-50 border-y border-slate-100 py-16">
         <div className="container mx-auto px-6 max-w-6xl">
            <div className="text-center mb-12">
@@ -1083,13 +1078,11 @@ const AboutDetail = ({ onBack, lang }) => {
            </div>
 
            <div className="grid md:grid-cols-2 gap-12 items-start">
-             {/* Left: Videos */}
              <div className="space-y-8">
                <h3 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
                  <Play className="text-red-500 fill-current" /> {lang === 'en' ? 'Featured Videos' : '精選影音'}
                </h3>
-               
-               {/* Video 1: English Intro */}
+
                <div className="group">
                   <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-xl bg-black relative border-4 border-white">
                      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/G99_FyXiI1U" title="English Intro" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
@@ -1102,7 +1095,6 @@ const AboutDetail = ({ onBack, lang }) => {
                   </div>
                </div>
 
-               {/* Video 2: Campus Intro */}
                <div className="group">
                   <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-xl bg-black relative border-4 border-white">
                      <iframe width="100%" height="100%" src="https://www.youtube.com/embed/wWdEPh06m-s" title="Campus Intro" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
@@ -1116,33 +1108,29 @@ const AboutDetail = ({ onBack, lang }) => {
                </div>
              </div>
 
-             {/* Right: Mascot & Campus Life */}
              <div className="space-y-8">
-                {/* Mascot Card */}
                 <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-100 text-center relative overflow-hidden group hover:shadow-2xl transition-all">
                     <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-yellow-400 to-orange-500"></div>
                     <div className="absolute top-3 right-3 opacity-10 rotate-12">
                        <Award size={100} />
                     </div>
-                    
+
                     <span className="text-orange-500 font-bold tracking-wider text-xs uppercase mb-2 block">{lang === 'en' ? 'Our Mascot' : '學校吉祥物'}</span>
                     <h3 className="text-2xl font-bold mb-6 text-slate-800">{lang === 'en' ? 'NEHSP Spirit' : '屏科實中精神象徵'}</h3>
-                    
+
                     <div className="w-56 h-56 mx-auto relative z-10 my-4 transform group-hover:scale-110 transition-transform duration-500">
-                       <Image src={images.about_mascot} className="w-full h-full object-contain" alt="School Mascot" />
+                       <Image src={images.about_mascot} className="w-full h-full object-contain bg-white" alt="School Mascot" />
                     </div>
-                    
+
                     <div className="mt-6 text-slate-600 bg-slate-50 p-4 rounded-xl text-sm leading-relaxed">
                        {lang === 'en' ? 'Representing energy, innovation, and a bright future! Our mascot embodies the spirit of our students - curious, active, and ready to explore the world.' : '象徵活力、創新與光明的未來！我們的吉祥物體現了屏科實中學生的精神——充滿好奇心、積極主動，隨時準備好探索世界。'}
                     </div>
                 </div>
 
-                {/* Additional Info / Photos - 更新校園剪影區塊 */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                    <h4 className="font-bold text-slate-900 mb-4 flex items-center gap-2"><Users size={18} className="text-blue-500"/> {lang === 'en' ? 'Student Activities' : '校園剪影'}</h4>
-                   
+
                    <div className="space-y-6">
-                      {/* Photo 1: Traffic Safety */}
                       <div className="group">
                           <div className="aspect-video rounded-xl overflow-hidden mb-2 relative shadow-md">
                              <Image src={images.about_traffic} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -1155,7 +1143,6 @@ const AboutDetail = ({ onBack, lang }) => {
                           </p>
                       </div>
 
-                      {/* Photo 2: Basketball Championship */}
                       <div className="group">
                           <div className="aspect-video rounded-xl overflow-hidden mb-2 relative shadow-md">
                              <Image src={images.about_basketball} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -1168,7 +1155,6 @@ const AboutDetail = ({ onBack, lang }) => {
                           </p>
                       </div>
 
-                      {/* Generic Photos (Small Grid) */}
                       <div className="grid grid-cols-2 gap-3 pt-4 border-t border-slate-100">
                           <Image src={images.about_intro1} className="rounded-lg shadow-sm h-20 w-full object-cover grayscale hover:grayscale-0 transition-all" />
                           <Image src={images.about_intro2} className="rounded-lg shadow-sm h-20 w-full object-cover grayscale hover:grayscale-0 transition-all" />
@@ -1180,7 +1166,6 @@ const AboutDetail = ({ onBack, lang }) => {
         </div>
       </div>
 
-      {/* Footer / Link Section */}
       <div className="container mx-auto px-6 py-12 text-center">
           <a href="https://nehs.ptc.edu.tw/nss/p/index" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white rounded-full font-bold shadow-lg hover:bg-slate-700 hover:shadow-xl transition-all hover:-translate-y-1">{lang === 'en' ? 'Visit Official School Website' : '前往學校官方網站'}<ExternalLink size={18} /></a>
       </div>
@@ -1198,9 +1183,6 @@ const AboutDetail = ({ onBack, lang }) => {
   );
 };
 
-// ==========================================
-// [新元件] BSRUExchangeDetail (臺泰國際交流詳情頁)
-// ==========================================
 const BSRUExchangeDetail = ({ onBack, lang }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -1212,7 +1194,6 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
         <button onClick={onBack} className="flex items-center gap-2 text-slate-600 hover:text-green-600 font-bold transition-colors"><ArrowLeft size={20} />{lang === 'en' ? 'Back' : '返回'}</button>
         <span className="font-bold text-slate-800">{lang === 'en' ? 'BSRU Exchange' : '臺泰國際交流'}</span>
       </div>
-
       <div className="relative h-[40vh] w-full overflow-hidden bg-slate-900">
         <div className="absolute inset-0">
             <Image src={images.bsru_group1} alt="BSRU Visit" className="w-full h-full object-cover opacity-60" />
@@ -1224,25 +1205,21 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
             {lang === 'en' ? 'Green Mango Expedition: Taiwan-Thailand Design Journey' : '綠色芒果探險隊：臺泰減碳設計之旅'}
           </h1>
           <p className="text-lg text-slate-200 max-w-2xl">
-            {lang === 'en' ? 'BSRU elementary students visited our school for a co-learning adventure on net-zero strategies.' : '泰國 BSRU 國小學生實體到訪，與我們共同進行淨零排放策略的跨域學習探險。'}
+            {lang === 'en' ? 'BSRU elementary students visited us for a co-learning adventure on net-zero strategies.' : '泰國 BSRU 國小學生實體到訪，與我們共同進行淨零排放策略的跨域學習探險。'}
           </p>
         </div>
       </div>
 
       <div className="container mx-auto px-6 py-12 max-w-5xl">
-        {/* Intro */}
         <div className="mb-16 text-center">
               <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto">
-                {lang === 'en' 
-                    ? 'In this special event, Taiwanese students acted as "Little Teachers," guiding Thai partners to explore carbon footprints. We used AI tools like "Da-Ge AI" to co-design carbon reduction plans for Thai mangoes. It was a journey of cross-cultural communication, technology application, and environmental action.' 
+                {lang === 'en'
+                    ? 'In this special event, Taiwanese students acted as "Little Teachers," guiding Thai partners to explore carbon footprints. We used AI tools like "Da-Ge AI" to co-design carbon reduction plans for Thai mangoes. It was a journey of cross-cultural communication, technology application, and environmental action.'
                     : '在這場特別的活動中，臺灣學生擔任「小老師」，引導泰國夥伴探索碳足跡議題。我們運用「達哥 AI」等科技工具，共同為泰國芒果設計減碳方案。這是一趟融合跨文化溝通、科技應用與環保行動的學習之旅。'}
              </p>
         </div>
 
-        {/* Process Steps */}
         <div className="space-y-16">
-            
-            {/* Part 1 - Modified Layout */}
             <div className="space-y-6">
                 <div className="text-center">
                     <span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Part 1</span>
@@ -1252,7 +1229,6 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
                     </p>
                 </div>
                 <div className="flex flex-col md:flex-row gap-6">
-                    {/* Left: Horizontal Images (3) */}
                     <div className="w-full md:w-3/4 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="md:col-span-2 space-y-2">
                            <Image src={images.bsru_thaidance} className="rounded-xl shadow-md w-full aspect-video object-cover" />
@@ -1267,7 +1243,6 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
                            <p className="text-xs text-center text-slate-500 font-bold">{lang === 'en' ? 'Lunar New Year Intro' : '臺灣新年介紹'}</p>
                         </div>
                     </div>
-                    {/* Right: Vertical Image (1) */}
                     <div className="w-full md:w-1/4 flex flex-col space-y-2">
                         <div className="flex-grow rounded-xl overflow-hidden shadow-md bg-slate-100">
                              <Image src={images.bsru_couplets1} className="w-full h-full object-contain" />
@@ -1277,7 +1252,6 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
                 </div>
             </div>
 
-            {/* Part 2 */}
             <div className="space-y-6">
                  <div className="text-center">
                     <span className="text-blue-600 font-bold tracking-wider text-sm uppercase">Part 2</span>
@@ -1298,7 +1272,6 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
                 </div>
             </div>
 
-             {/* Part 3 */}
              <div className="space-y-6">
                 <div className="text-center">
                     <span className="text-yellow-600 font-bold tracking-wider text-sm uppercase">Part 3</span>
@@ -1312,7 +1285,7 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
                     <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg"><Image src={images.bsru_teachers} className="w-full h-full object-cover" /></div>
                 </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
                  <Image src={images.bsru_group1} className="rounded-2xl shadow-lg w-full aspect-[4/3] object-cover hover:scale-105 transition-transform" />
                  <Image src={images.bsru_group2} className="rounded-2xl shadow-lg w-full aspect-[4/3] object-cover hover:scale-105 transition-transform" />
@@ -1320,7 +1293,7 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
             </div>
 
         </div>
-        
+
         <div className="mt-16 text-center">
             <a href="https://sites.google.com/nehs.ptc.edu.tw/elementary-d-learning/modules-content/%E6%A8%A1%E7%B5%84%E5%9B%9B-net-zero-%E7%AD%96%E7%95%A5%E5%AE%B6?authuser=0" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-600 font-bold hover:underline">
                 {lang === 'en' ? 'View Full Documentation on Google Sites' : '前往 Google Sites 查看完整活動紀錄'} <ExternalLink size={16} />
@@ -1331,19 +1304,15 @@ const BSRUExchangeDetail = ({ onBack, lang }) => {
     </div>
   );
 };
-
 const PhysicalExchangeDetail = ({ onBack, lang }) => {
     useEffect(() => { window.scrollTo(0, 0); }, []);
-    
+
     return (
         <div className="fixed inset-0 z-[100] bg-white overflow-y-auto animate-fade-in font-sans">
             <div className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
                 <button onClick={onBack} className="flex items-center gap-2 text-slate-600 hover:text-green-600 font-bold transition-colors"><ArrowLeft size={20} />{lang === 'en' ? 'Back' : '返回'}</button>
-                {/* 修正：將標題改為 In-Person Interaction */}
                 <span className="font-bold text-slate-800">{lang === 'en' ? 'In-Person Interaction' : '實體國際交流'}</span>
             </div>
-
-            {/* Hero Section */}
             <div className="relative h-[40vh] w-full overflow-hidden bg-slate-900">
                <div className="absolute inset-0">
                   <Image src={images.m4_group_qaci} className="w-full h-full object-cover opacity-60" />
@@ -1361,8 +1330,7 @@ const PhysicalExchangeDetail = ({ onBack, lang }) => {
             </div>
 
             <div className="container mx-auto px-6 py-12 max-w-6xl">
-                 
-                 {/* 1. Group Photos */}
+
                  <div className="mb-20">
                      <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold text-slate-900">{lang === 'en' ? 'Welcome Friends' : '有朋自遠方來'}</h2>
@@ -1384,15 +1352,14 @@ const PhysicalExchangeDetail = ({ onBack, lang }) => {
                      </div>
                  </div>
 
-                 {/* 2. Culture & Performance (Video) */}
                  <div className="mb-20 bg-slate-50 rounded-3xl p-8 border border-slate-100">
                      <div className="flex flex-col md:flex-row gap-8 items-center">
                         <div className="w-full md:w-1/2 space-y-4">
-                            <span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Cultural Exchange</span>
-                            <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Traditional Thai Dance' : '文化展演：泰國傳統舞蹈'}</h3>
-                            <p className="text-slate-600 leading-relaxed">
-                               {lang === 'en' ? 'Students from Thailand performed a traditional dance, teaching us about their rich heritage.' : '泰國學生帶來精彩的傳統舞蹈表演，讓我們在優美的舞姿中感受泰國文化的獨特魅力。'}
-                            </p>
+                           <span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Cultural Exchange</span>
+                           <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Traditional Thai Dance' : '文化展演：泰國傳統舞蹈'}</h3>
+                           <p className="text-slate-600 leading-relaxed">
+                              {lang === 'en' ? 'Students from Thailand performed a traditional dance, teaching us about their rich heritage.' : '泰國學生帶來精彩的傳統舞蹈表演，讓我們在優美的舞姿中感受泰國文化的獨特魅力。'}
+                           </p>
                         </div>
                         <div className="w-full md:w-1/2">
                            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-xl bg-black border-4 border-white">
@@ -1402,27 +1369,24 @@ const PhysicalExchangeDetail = ({ onBack, lang }) => {
                      </div>
                  </div>
 
-                 {/* 3. Project Sharing: Slogans & Solar Cookers */}
                  <div className="mb-20 space-y-16">
-                     {/* Slogans */}
                      <div>
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><Lightbulb size={20} /></div>
-                            <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'AI Slogans Sharing' : 'AI 標語創作分享'}</h3>
+                           <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600"><Lightbulb size={20} /></div>
+                           <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'AI Slogans Sharing' : 'AI 標語創作分享'}</h3>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <Image src={images.m4_slogan_qaci1} className="rounded-xl shadow-md w-full aspect-square object-cover" />
-                            <Image src={images.m4_slogan_rmutt1} className="rounded-xl shadow-md w-full aspect-square object-cover" />
-                            <Image src={images.m4_slogan_nsysu2} className="rounded-xl shadow-md w-full aspect-square object-cover" />
-                            <Image src={images.m4_slogan_foreign} className="rounded-xl shadow-md w-full aspect-square object-cover" />
+                           <Image src={images.m4_slogan_qaci1} className="rounded-xl shadow-md w-full aspect-square object-cover" />
+                           <Image src={images.m4_slogan_rmutt1} className="rounded-xl shadow-md w-full aspect-square object-cover" />
+                           <Image src={images.m4_slogan_nsysu2} className="rounded-xl shadow-md w-full aspect-square object-cover" />
+                           <Image src={images.m4_slogan_foreign} className="rounded-xl shadow-md w-full aspect-square object-cover" />
                         </div>
                      </div>
 
-                     {/* Solar Cookers */}
                      <div>
                         <div className="flex items-center gap-4 mb-6">
-                            <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600"><Sun size={20} /></div>
-                            <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Solar Cooker Demonstration' : '太陽能鍋實作展示'}</h3>
+                           <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600"><Sun size={20} /></div>
+                           <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Solar Cooker Demonstration' : '太陽能鍋實作展示'}</h3>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                              <div className="col-span-2 md:col-span-1 row-span-2 rounded-2xl overflow-hidden shadow-lg relative group">
@@ -1437,16 +1401,15 @@ const PhysicalExchangeDetail = ({ onBack, lang }) => {
                      </div>
                  </div>
 
-                 {/* 4. Science Fair (Video + Photos) */}
                  <div className="mb-20">
                      <div className="flex items-center gap-4 mb-8">
                         <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600"><BookOpen size={20} /></div>
                         <div>
-                            <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Science Fair Presentation' : '科展作品全英解說'}</h3>
-                            <p className="text-sm text-slate-500">{lang === 'en' ? 'Our students presenting scientific research in English.' : '學生自信地向外國賓客介紹科學研究成果。'}</p>
+                           <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Science Fair Presentation' : '科展作品全英解說'}</h3>
+                           <p className="text-sm text-slate-500">{lang === 'en' ? 'Our students presenting scientific research in English.' : '學生自信地向外國賓客介紹科學研究成果。'}</p>
                         </div>
                      </div>
-                     
+
                      <div className="grid md:grid-cols-2 gap-8 mb-8">
                          <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-lg bg-black">
                             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/T7pGba3nFlc" title="Science Fair" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
@@ -1464,7 +1427,6 @@ const PhysicalExchangeDetail = ({ onBack, lang }) => {
                      </div>
                  </div>
 
-                 {/* 5. Tech & Art Highlights */}
                  <div>
                     <div className="text-center mb-10"><h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Tech & Art Highlights' : '科技與藝術的交會'}</h3></div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -1505,7 +1467,7 @@ const ModuleDetail = ({ module, onBack, lang }) => {
         <div key={idx} className={`flex flex-col ${idx % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-12 items-start`}>
           <div className="w-full lg:w-1/2">
             <div className="relative group rounded-3xl overflow-hidden shadow-2xl">
-              <Image src={sys.img} alt={sys.title} className="w-full h-full lg:h-[400px] object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Image src={sys.img} alt={sys.title} className="w-full aspect-video lg:h-[400px] lg:aspect-auto object-cover transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
               <div className="absolute bottom-6 left-6 right-6">
                 <div className="flex flex-wrap gap-2 mb-2">{sys.tags.map((tag, tIdx) => (<span key={tIdx} className="px-3 py-1 bg-white/20 backdrop-blur-md text-white text-xs font-bold rounded-full border border-white/30">{tag}</span>))}</div>
@@ -1520,28 +1482,27 @@ const ModuleDetail = ({ module, onBack, lang }) => {
               <ul className="grid grid-cols-2 gap-2">{sys.components.map((comp, cIdx) => (<li key={cIdx} className="flex items-center gap-2 text-sm text-slate-600"><div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>{comp}</li>))}</ul>
             </div>
 
-            {/* 新增：影片播放區塊 */}
             {sys.videoId && (
               <div className="mt-6">
-                 <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                   <Play size={18} className="text-red-500 fill-current" />
-                   {lang === 'en' ? 'System Demo Video' : '實作成果影片'}
-                 </h4>
-                 <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-lg bg-black border-2 border-white relative group">
-                    <iframe 
-                      width="100%" 
-                      height="100%" 
-                      src={`https://www.youtube.com/embed/${sys.videoId}`} 
-                      title={sys.title} 
-                      frameBorder="0" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                      allowFullScreen
-                      className="absolute inset-0 w-full h-full"
-                    ></iframe>
-                 </div>
-                 <p className="text-xs text-slate-500 mt-2 italic">
-                   {lang === 'en' ? 'Watch the students\' creation in action.' : '觀看學生親手製作的裝置實際運作情形。'}
-                 </p>
+                  <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                    <Play size={18} className="text-red-500 fill-current" />
+                    {lang === 'en' ? 'System Demo Video' : '實作成果影片'}
+                  </h4>
+                  <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-lg bg-black border-2 border-white relative group">
+                     <iframe
+                       width="100%"
+                       height="100%"
+                       src={`https://www.youtube.com/embed/${sys.videoId}`}
+                       title={sys.title}
+                       frameBorder="0"
+                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                       allowFullScreen
+                       className="absolute inset-0 w-full h-full"
+                     ></iframe>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2 italic">
+                    {lang === 'en' ? 'Watch the students\' creation in action.' : '觀看學生親手製作的裝置實際運作情形。'}
+                  </p>
               </div>
             )}
           </div>
@@ -1566,7 +1527,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
              </div>
           </div>
           <div className="w-full lg:w-1/2 space-y-6">
-             {/* 修正1：調整標題字體大小，英文版縮小；並修正標題切割邏輯 */}
              <h1 className={`font-black text-slate-900 leading-tight ${lang === 'en' ? 'text-2xl lg:text-3xl' : 'text-3xl lg:text-4xl'}`}>
                 {lang === 'en' ? module.fullDesc : module.fullDesc.split('。')[0] + '。'}
              </h1>
@@ -1578,25 +1538,20 @@ const ModuleDetail = ({ module, onBack, lang }) => {
           </div>
         </div>
 
-        {/* 1. Systems (Module 2 Only) */}
         {module.id === '02' && renderDualSystems()}
-        
-        {/* 2. AI Card Gallery (Module 1 Only) */}
+
         {module.id === '01' && (
            <AICard lang={lang} mode="full" />
         )}
 
-        {/* 3. Global Impact (Module 4 Only) - 修正2：內容全面雙語化 */}
         {module.id === '04' && (
           <div className="space-y-24 mb-16">
-            {/* Satsukigakuen */}
             <div>
               <div className="text-center mb-12">
                 <span className="text-blue-500 font-bold tracking-wider text-sm uppercase">Online Exchange I</span>
                 <h2 className="text-3xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Japan Exchange (Satsukigakuen)' : '日本學校交流 (Satsukigakuen)'}</h2>
               </div>
               <div className="relative border-l-4 border-blue-100 ml-4 md:ml-12 space-y-16">
-                  {/* Session 1 */}
                   <div className="relative pl-8 md:pl-12">
                       <div className="absolute -left-[14px] top-0 w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-md"></div>
                       <div className="flex flex-col lg:flex-row gap-8">
@@ -1604,8 +1559,8 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                               <div className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold mb-2">Session 1 • 2024.05.13</div>
                               <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Climate Change Sharing' : '氣候變遷主題分享'}</h3>
                               <p className="text-slate-600 leading-relaxed">
-                                {lang === 'en' 
-                                  ? "This was our first official exchange. We prepared English presentations on 'Climate Change' to introduce global warming impacts and actions elementary students can take." 
+                                {lang === 'en'
+                                  ? "This was our first official exchange. We prepared English presentations on 'Climate Change' to introduce global warming impacts and actions elementary students can take."
                                   : '這是我們雙方的第一次正式交流。我們準備了關於「氣候變遷 (Climate Change)」的英文簡報，向日方同學介紹全球暖化對環境的影響，以及我們身為小學生可以採取的行動。'}
                               </p>
                               <div className="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-lg"><iframe src="https://www.youtube.com/embed/Uibfpsq0wgI" title="0513 Climate Change Presentation" width="100%" height="100%" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /></div>
@@ -1617,7 +1572,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                           </div>
                       </div>
                   </div>
-                  {/* Session 2 */}
                   <div className="relative pl-8 md:pl-12">
                       <div className="absolute -left-[14px] top-0 w-6 h-6 bg-green-500 rounded-full border-4 border-white shadow-md"></div>
                       <div className="flex flex-col lg:flex-row gap-8">
@@ -1625,8 +1579,8 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                               <div className="inline-block px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold mb-2">Session 2 • 2024.06.13</div>
                               <h3 className="text-2xl font-bold text-slate-900">{lang === 'en' ? 'Life Context & Osaka Expo' : '生活情境與大阪博覽會'}</h3>
                               <p className="text-slate-600 leading-relaxed">
-                                {lang === 'en' 
-                                  ? "The second exchange was more life-oriented. We prepared questions about daily life, and the Japanese students introduced the upcoming 'Osaka Expo'." 
+                                {lang === 'en'
+                                  ? "The second exchange was more life-oriented. We prepared questions about daily life, and the Japanese students introduced the upcoming 'Osaka Expo'."
                                   : '第二次交流更加生活化。我們準備了生活情境的英文提問，了解日本小學生的日常生活；日方則熱情地向我們介紹即將到來的「大阪博覽會 (Osaka Expo)」。'}
                               </p>
                               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-5 mt-4">
@@ -1635,8 +1589,8 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                                   <h4 className="font-bold text-slate-800 text-sm">{lang === 'en' ? 'Teaching Highlight: Differentiation' : '教學亮點：差異化教學'}</h4>
                                 </div>
                                 <p className="text-xs text-slate-600 leading-relaxed">
-                                  {lang === 'en' 
-                                    ? 'Adopting a grouping strategy where students with stronger English skills lead discussions and formulate questions.' 
+                                  {lang === 'en'
+                                    ? 'Adopting a grouping strategy where students with stronger English skills lead discussions and formulate questions.'
                                     : '採用分組策略，由英語能力較強的學生擔任組長，帶領組員共同討論並提出問題。'}
                                 </p>
                               </div>
@@ -1654,7 +1608,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
               </div>
             </div>
 
-            {/* Minamata */}
             <div className="bg-slate-50 rounded-3xl p-8 md:p-16 border border-slate-200">
               <div className="text-center mb-16">
                 <span className="text-teal-600 font-bold tracking-wider text-sm uppercase">Online Exchange II</span>
@@ -1664,7 +1617,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                 </p>
               </div>
               <div className="space-y-24">
-                  {/* 0620 */}
                   <div className="flex flex-col md:flex-row gap-12 items-center">
                       <div className="w-full md:w-1/2 space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold">Session 1 • 06.20</div>
@@ -1676,7 +1628,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                       </div>
                       <div className="w-full md:w-1/2 grid grid-cols-2 gap-4"><Image src={images.m4_minamata_0620_intro} className="rounded-xl shadow-md rotate-2 hover:rotate-0 transition-transform duration-500" /><Image src={images.m4_minamata_0620_interact} className="rounded-xl shadow-md -rotate-2 hover:rotate-0 transition-transform duration-500 mt-8" /></div>
                   </div>
-                  {/* 0926 */}
                   <div className="flex flex-col md:flex-row-reverse gap-12 items-center">
                       <div className="w-full md:w-1/2 space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold">Session 2 • 09.26</div>
@@ -1694,7 +1645,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                         <Image src={images.m4_minamata_0926_climate} className="rounded-lg aspect-video w-full object-cover" />
                       </div>
                   </div>
-                  {/* 1017 */}
                   <div className="flex flex-col md:flex-row gap-12 items-center">
                       <div className="w-full md:w-1/2 space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold">Session 3 • 10.17</div>
@@ -1714,7 +1664,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                         <Image src={images.m4_highlight_painting} className="rounded-xl shadow-md w-full h-48 object-cover" />
                       </div>
                   </div>
-                  {/* 1209 */}
                   <div className="flex flex-col md:flex-row-reverse gap-12 items-center">
                       <div className="w-full md:w-1/2 space-y-4">
                         <div className="inline-flex items-center gap-2 px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-xs font-bold">Session 4 • 12.09</div>
@@ -1733,7 +1682,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                       </div>
                   </div>
 
-                  {/* 新增：媒體報導 (News Feature) */}
                   <div className="mt-8 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col md:flex-row gap-6 items-center hover:shadow-md transition-shadow">
                     <div className="w-full md:w-1/3 aspect-video bg-slate-100 rounded-xl overflow-hidden relative group">
                        <Image src={images.m4_minamata_1209_principal} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
@@ -1744,8 +1692,8 @@ const ModuleDetail = ({ module, onBack, lang }) => {
                     <div className="w-full md:w-2/3 space-y-3">
                        <h4 className="text-xl font-bold text-slate-900">{lang === 'en' ? 'Featured in Kumamoto Nichinichi Shimbun' : '獲刊登於日本熊本日日新聞'}</h4>
                        <p className="text-slate-600 text-sm leading-relaxed">
-                         {lang === 'en' 
-                           ? 'Our exchange activities with Minamata 2nd Elementary School were featured in the local newspaper "Kumamoto Nichinichi Shimbun". The report highlighted our online interactions and joint efforts in eliminating discrimination.' 
+                         {lang === 'en'
+                           ? 'Our exchange activities with Minamata 2nd Elementary School were featured in the local newspaper "Kumamoto Nichinichi Shimbun". The report highlighted our online interactions and joint efforts in eliminating discrimination.'
                            : '我們與水俁第二小學的交流活動，榮獲當地媒體「熊本日日新聞」報導。文中特別提及了雙方的線上互動，以及共同消除歧視的努力。'}
                        </p>
                        <a href="https://kumanichi.com/articles/1807643" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-blue-600 font-bold text-sm hover:underline mt-2">
@@ -1758,7 +1706,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
           </div>
         )}
 
-        {/* 4. Steps (All Modules Except 4) */}
         {module.details.steps && module.id !== '04' && (
            <div className="mb-16">
              <div className="text-center mb-12"><span className="text-green-600 font-bold tracking-wider text-sm uppercase">Step by Step</span><h2 className="text-3xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Learning Process' : '探究學習歷程'}</h2></div>
@@ -1778,7 +1725,6 @@ const ModuleDetail = ({ module, onBack, lang }) => {
            </div>
         )}
 
-        {/* 5. Irrigation Steps (Module 2 Specific) */}
         {module.details.irrigationSteps && (
            <div className="mb-16">
              <div className="text-center mb-12"><span className="text-blue-500 font-bold tracking-wider text-sm uppercase">Smart System</span><h2 className="text-3xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Smart Irrigation Journey' : '學習歷程：智慧澆灌系統'}</h2></div>
@@ -1798,7 +1744,31 @@ const ModuleDetail = ({ module, onBack, lang }) => {
            </div>
         )}
 
-        {/* 6. Gallery (For All Modules including 4 if needed, though 4 has custom layout) */}
+        {module.details.teachingGallery && (
+           <div className="mb-16">
+             <div className="text-center mb-12"><span className="text-purple-600 font-bold tracking-wider text-sm uppercase">Teaching Highlights</span><h2 className="text-3xl font-bold text-slate-900 mt-2">{lang === 'en' ? 'Teacher Demonstration & Student Practice' : '教師教學引導與學生實作'}</h2></div>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {module.details.teachingGallery.map((img, i) => (
+                  <div key={i} className="group">
+                     <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-md mb-4 border border-slate-100 relative">
+                        <Image src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        {i >= 3 && (
+                            <div className="absolute bottom-2 left-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-md">
+                                {lang === 'en' ? 'Student Hands-on' : '學生實作'}
+                            </div>
+                        )}
+                        {i === 0 && (
+                            <div className="absolute bottom-2 left-2 bg-blue-600/80 text-white text-[10px] px-2 py-1 rounded-md">
+                                {lang === 'en' ? 'Teacher Guidance' : '教師指導'}
+                            </div>
+                        )}
+                     </div>
+                  </div>
+                ))}
+             </div>
+           </div>
+        )}
+
         {module.details.gallery && (
           <div className="mt-24">
             <h2 className="text-2xl font-bold text-slate-900 mb-8 border-l-4 border-purple-500 pl-4">{lang === 'en' ? 'Gallery' : '活動花絮'}</h2>
@@ -1822,7 +1792,6 @@ const App = () => {
   const [showPhysical, setShowPhysical] = useState(false);
   const [showBSRU, setShowBSRU] = useState(false);
   
-  // 新增成果展顯示狀態
   const [showExhibition, setShowExhibition] = useState(false);
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -1842,7 +1811,7 @@ const App = () => {
       setShowAbout(false);
       setShowPhysical(false);
       setShowBSRU(false);
-      setShowExhibition(false); // 確保關閉成果展
+      setShowExhibition(false);
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) window.scrollTo({ top: element.getBoundingClientRect().top + window.pageYOffset - 100, behavior: 'smooth' });
@@ -1892,7 +1861,7 @@ const App = () => {
               img: images.m2_sys_solar, 
               tags: ['光感測', '伺服馬達', '綠能科技'], 
               components: ['Micro:bit', '光敏電阻 x4', '伺服馬達 x2', '太陽能板'],
-              videoId: 'rDEJkudeUZA' // 加入追日影片 ID
+              videoId: 'rDEJkudeUZA'
             },
             { 
               title: lang === 'en' ? 'Smart Irrigation & Lighting' : '智慧農園監控系統', 
@@ -1900,7 +1869,7 @@ const App = () => {
               img: images.m2_sys_irrigation, 
               tags: ['土壤感測', '自動補光', '智慧農業'], 
               components: ['Micro:bit', '土壤濕度感測器', '繼電器模組', '水泵', 'LED補光燈'],
-              videoId: 'Mg0aWOXTzmA' // 加入農園影片 ID
+              videoId: 'Mg0aWOXTzmA'
             }
           ],
           steps: [
@@ -1913,6 +1882,15 @@ const App = () => {
             { title: lang === 'en' ? 'Hardware Assembly' : '硬體配置與組裝', desc: lang === 'en' ? 'Connecting sensors and pumps.' : '進行水泵、繼電器與感測器的線路連接，確保硬體運作正常。', img: images.m2_irrigation_make1 },
             { title: lang === 'en' ? 'Sensor Integration' : '感測器整合測試', desc: lang === 'en' ? 'Integrating soil sensors.' : '將土壤濕度感測器插入盆栽中，測試數值讀取是否準確。', img: images.m2_irrigation_make2 },
             { title: lang === 'en' ? 'System Verification' : '成品運作驗收', desc: lang === 'en' ? 'Verifying automatic watering.' : '完成全系統整合，驗證當土壤乾燥時，系統是否能自動啟動澆水功能。', img: images.m2_irrigation_finished }
+          ],
+          teachingGallery: [
+              images.m2_teach_new1,
+              images.m2_teach_1,
+              images.m2_teach_2,
+              images.m2_student_new1,
+              images.m2_student_new2,
+              images.m2_student_new3,
+              images.m2_student_new5
           ],
           gallery: images.m2_gallery
         }
@@ -1978,12 +1956,10 @@ const App = () => {
   if (showBSRU) {
     return <BSRUExchangeDetail onBack={() => setShowBSRU(false)} lang={lang} />;
   }
-  // 顯示成果展詳情頁
   if (showExhibition) {
     return <ExhibitionDetail onBack={() => setShowExhibition(false)} lang={lang} />;
   }
 
-  // 彙整所有模組的圖片作為首頁 Highlights
   const allHighlights = [
       ...(content.modulesData[0].details.gallery || []),
       ...(content.modulesData[1].details.gallery || []),
@@ -2004,24 +1980,52 @@ const App = () => {
           <ArrowRight size={12} />
         </button>
       </div>
-      <nav className={`fixed w-full z-50 transition-all duration-300 top-10 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'}`}>
+// ... inside App component return ...
+      <nav className="fixed w-full z-50 transition-all duration-300 top-10 bg-slate-900/95 backdrop-blur-md shadow-lg py-2">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-teal-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-green-500/20">N</div>
-            <div className={`flex flex-col leading-none ${scrolled ? 'text-slate-800' : 'text-slate-800 lg:text-white'}`}>
-              <span className="font-bold text-lg tracking-tight">NEHSP</span>
-              <span className="text-xs font-medium opacity-80">D-Learning</span>
+          {/* 左側：校徽與校名品牌區塊 (修改後) */}
+          <div className="flex items-center gap-3 cursor-pointer group select-none" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+            <div className="w-10 h-10 md:w-12 md:h-12 relative flex-shrink-0 bg-white rounded-full p-0.5 shadow-md transition-transform duration-300 group-hover:scale-105 ring-2 ring-white/10 overflow-hidden">
+               <Image src={images.about_logo} className="w-full h-full object-cover rounded-full bg-transparent" alt="NEHSP Logo" />
+            </div>
+            <div className="flex flex-col justify-center">
+                <h1 className="text-slate-100 font-bold text-sm md:text-lg leading-none tracking-wide group-hover:text-white transition-colors flex items-center gap-2">
+                    {lang === 'en' ? 'NEHSP' : '國立屏科實中'}
+                </h1>
+                <span className="text-slate-400 text-[10px] md:text-xs font-medium tracking-wider uppercase mt-1 group-hover:text-slate-300 transition-colors">
+                    {lang === 'en' ? 'Elementary Department' : '國小部雙語課程計畫'}
+                </span>
             </div>
           </div>
+
           <div className="hidden lg:flex items-center gap-8">
-            {/* 修正：將選單名稱改為 In-Person Interaction */}
-            {[{ name: lang === 'en' ? 'About' : '關於計畫', id: 'about' }, { name: lang === 'en' ? 'Exhibition' : '成果發表', id: 'exhibition' }, { name: lang === 'en' ? 'Modules' : '課程模組', id: 'modules' }, { name: lang === 'en' ? 'In-Person Interaction' : '實體交流', id: 'physical-exchange' }, { name: lang === 'en' ? 'Gallery' : '成果展示', id: 'gallery' }, { name: lang === 'en' ? 'Contact' : '聯絡資訊', id: 'contact' }].map((item, index) => (
-              <button key={index} onClick={() => scrollToSection(item.id)} className={`text-sm font-medium hover:text-green-500 transition-colors ${scrolled ? 'text-slate-600' : 'text-white/90'}`}>{item.name}</button>
+            {[{ name: lang === 'en' ? 'About' : '關於我們', id: 'about' }, { name: lang === 'en' ? 'Exhibition' : '成果發表', id: 'exhibition' }, { name: lang === 'en' ? 'Modules' : '課程模組', id: 'modules' }, { name: lang === 'en' ? 'In-Person Interaction' : '實體交流', id: 'physical-exchange' }, { name: lang === 'en' ? 'Gallery' : '成果展示', id: 'gallery' }, { name: lang === 'en' ? 'Contact' : '聯絡資訊', id: 'contact' }].map((item, index) => (
+              <button key={index} onClick={() => scrollToSection(item.id)} className="text-sm font-medium hover:text-green-500 transition-colors text-slate-300">{item.name}</button>
             ))}
           </div>
-          <button className={`lg:hidden p-2 rounded-md ${scrolled ? 'text-slate-800' : 'text-slate-800 lg:text-white'}`} onClick={() => setIsMenuOpen(!isMenuOpen)}><Menu /></button>
+          {/* 手機版選單按鈕：切換圖示 */}
+          <button className="lg:hidden p-2 rounded-md text-white hover:bg-slate-800 transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+
+        {/* 手機版下拉選單 (新增區塊) */}
+        <div className={`lg:hidden absolute top-full left-0 w-full bg-slate-900 border-t border-slate-800 shadow-2xl transition-all duration-300 ease-in-out overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className="flex flex-col p-4 space-y-2">
+              {[{ name: lang === 'en' ? 'About' : '關於我們', id: 'about' }, { name: lang === 'en' ? 'Exhibition' : '成果發表', id: 'exhibition' }, { name: lang === 'en' ? 'Modules' : '課程模組', id: 'modules' }, { name: lang === 'en' ? 'In-Person Interaction' : '實體交流', id: 'physical-exchange' }, { name: lang === 'en' ? 'Gallery' : '成果展示', id: 'gallery' }, { name: lang === 'en' ? 'Contact' : '聯絡資訊', id: 'contact' }].map((item, index) => (
+                <button 
+                  key={index} 
+                  onClick={() => scrollToSection(item.id)} 
+                  className="text-left px-4 py-3 text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition-all text-sm font-medium flex items-center gap-3"
+                >
+                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                  {item.name}
+                </button>
+              ))}
+            </div>
         </div>
       </nav>
+
       <header id="about" className="relative pt-40 pb-20 lg:pt-56 lg:pb-40 overflow-hidden bg-slate-50">
         <div className="absolute top-0 right-0 w-full lg:w-2/3 h-full bg-[#f0fdf4] -z-10 lg:rounded-bl-[150px]" />
         <div className="container mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
@@ -2034,7 +2038,8 @@ const App = () => {
               <button onClick={() => setShowAbout(true)} className="px-8 py-4 bg-white text-slate-700 border border-slate-200 rounded-xl font-bold hover:bg-slate-50 hover:border-slate-300 transition-all flex items-center gap-2">{lang === 'en' ? 'About Us' : '關於我們'}</button>
             </div>
           </div>
-          <div className="relative lg:h-[500px]">
+          {/* 修改高度：增加 h-64 確保手機版有高度，避免圖片消失 */}
+          <div className="relative h-64 lg:h-[500px]">
             <div className="relative z-10 w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-slate-200 group">
               <div className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105" style={{ backgroundImage: `url(${images.hero})` }}></div>
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
@@ -2061,7 +2066,6 @@ const App = () => {
         </div>
       </section>
 
-      {/* 新增：成果展區塊 (Exhibition Section) */}
       <section id="exhibition" className="bg-white pb-20">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-12 items-center bg-slate-50 rounded-[3rem] p-8 lg:p-16 overflow-hidden relative group border border-slate-100 shadow-sm">
@@ -2124,8 +2128,7 @@ const App = () => {
           </div>
         </div>
       </section>
-       
-      {/* 新增：實體國際交流區塊 (Physical Exchange Section) */}
+        
       <section id="physical-exchange" className="py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="bg-gradient-to-r from-green-600 to-teal-700 rounded-3xl shadow-2xl overflow-hidden relative">
@@ -2142,7 +2145,6 @@ const App = () => {
               </div>
               <div className="w-full lg:w-1/2">
                 <div className="grid grid-cols-2 gap-4 transform rotate-2 hover:rotate-0 transition-transform duration-500">
-                  {/* 將第一張照片更換為中山大學外籍生合照，增加多樣性 */}
                   <Image src={images.m4_group_nsysu} className="rounded-2xl shadow-lg w-full h-48 object-cover" />
                   <Image src={images.m4_physical_aus} className="rounded-2xl shadow-lg w-full h-48 object-cover translate-y-8" />
                 </div>
@@ -2152,7 +2154,6 @@ const App = () => {
         </div>
       </section>
 
-      {/* 新增：BSRU Special Highlight 區塊 */}
       <section className="py-24 bg-slate-50 relative overflow-hidden">
          <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-white to-transparent"></div>
          <div className="container mx-auto px-6">
@@ -2212,15 +2213,13 @@ const App = () => {
         </div>
       </section>
       <GlobalWall />
-       
-      {/* Pass lang prop to AICard, default mode is 'preview' (3 cards) */}
+        
       <AICard lang={lang} mode="preview" />
-       
+        
       <section id="gallery" className="py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16"><h2 className="text-3xl md:text-4xl font-bold text-slate-900">{lang === 'en' ? 'Highlights' : '精彩瞬間'}</h2></div>
           <div className="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory hide-scrollbar">
-            {/* 使用彙整後的所有圖片 (allHighlights) */}
             {allHighlights.map((img, idx) => (
               <div key={idx} className="min-w-[300px] md:min-w-[400px] snap-center">
                 <div className="rounded-2xl overflow-hidden shadow-lg h-[250px] relative group">
@@ -2231,8 +2230,54 @@ const App = () => {
           </div>
         </div>
       </section>
-      <footer id="contact" className="bg-slate-900 text-slate-300 py-16">
-        <div className="container mx-auto px-6 text-center text-sm"><p>© 2024 NEHSP Elementary Department.</p></div>
+
+      <footer id="contact" className="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-white tracking-wide">國立屏科實驗高級中等學校</h3>
+              <h4 className="text-sm font-medium text-slate-400">National Experimental High School at Pingtung Science Park</h4>
+              <div className="w-12 h-1 bg-green-500 rounded-full mt-4"></div>
+            </div>
+
+            <div className="space-y-6">
+              <h4 className="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2 inline-block">聯絡資訊 Contact</h4>
+              <ul className="space-y-4">
+                <li className="flex items-center gap-4 group">
+                  <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-green-500 group-hover:bg-green-600 group-hover:text-white transition-all">
+                    <Phone size={18} />
+                  </div>
+                  <div>
+                     <span className="text-xs text-slate-500 block uppercase tracking-wider font-bold">Phone</span>
+                     <span className="text-white font-medium">08-7659025</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-6">
+               <h4 className="text-lg font-bold text-white mb-4 border-b border-slate-700 pb-2 inline-block">關於我們 About</h4>
+               <p className="text-sm text-slate-400 leading-relaxed">
+                  {lang === 'en' 
+                    ? 'Cultivating future talents with international vision and scientific literacy through bilingual and digital learning.' 
+                    : '致力於雙語教育與數位學習，培育具備國際視野與科學素養的未來人才。'}
+               </p>
+               <div className="flex gap-4 pt-2">
+                  <a href="https://nehs.ptc.edu.tw/" target="_blank" rel="noreferrer" className="text-sm font-bold text-green-400 hover:text-green-300 transition-colors flex items-center gap-1">
+                     Official Website <ExternalLink size={14}/>
+                  </a>
+               </div>
+            </div>
+          </div>
+
+          <div className="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+            <p>&copy; 2025 NEHSP Elementary Department. All rights reserved.</p>
+            <div className="flex gap-6 mt-4 md:mt-0">
+               <span className="hover:text-slate-300 cursor-pointer transition-colors">Privacy Policy</span>
+               <span className="hover:text-slate-300 cursor-pointer transition-colors">Terms of Use</span>
+            </div>
+          </div>
+        </div>
       </footer>
     </div>
   );
